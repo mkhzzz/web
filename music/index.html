@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>"whatdoyoulistento?"</title>
+
+    <style>
+        /* General Page Styling */
+        body {
+            background-color: #F0A8D0;
+            color: #FFEBD4;
+            font-size: 1.6rem;
+            font-family: 'Ladybird';
+            overflow-x: hidden;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            transition: background-color 1s ease;
+        }
+
+        * {
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+        }
+
+        @font-face {
+            font-family: 'Cactus Jack'; 
+            src: url('assets/fonts/CactusJack.otf') format('opentype');
+        }
+        @font-face {
+            font-family: 'Pecita';
+            src: url('assets/fonts/Pecita.otf') format('opentype');
+        }
+        @font-face {
+            font-family: 'Glassure';
+            src: url('assets/fonts/Glassure.otf') format('opentype');
+        }
+        @font-face {
+            font-family: 'Philosophy';
+            src: url('assets/fonts/Philosophy.otf') format('opentype');
+        }
+
+        #title {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: #F0A8D0;
+            text-align: center;
+            z-index: 1000;
+            padding-bottom: 0;
+            box-sizing: border-box;
+        }
+
+        a {
+            font-family: 'Pecita';
+            font-size: 2.2rem;
+            color: #FFEBD4;
+            text-align: center;
+        }
+        
+        #title h2 {
+            font-family: 'Glassure';
+            font-size: 6rem;
+            color: #FFEBD4;
+            text-align: center;
+            width: 100%;
+            margin: 5px 0 0 0;
+        }
+
+        .subtitle {
+            font-family: 'Cactus Jack';
+            font-size: 3rem;
+            color: #FFEBD4;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Button Container */
+        .button-container {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            height: calc(100vh - 150px);
+            padding-top: 150px;
+            gap: 120px;
+        }
+
+        /* Button Styling */
+        .large-button {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 400px;
+            height: 500px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: transform 0.4s ease;
+        }
+
+        .large-button:hover {
+            transform: scale(1.05);
+        }
+
+        /* Text box for covers */
+        .cover-text-box {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #22001f;
+            text-align: center;
+            font-family: 'Cactus Jack';
+            font-size: 3.5rem;
+            z-index: 20;
+        }
+
+        /* CD Case Styling */
+        .cd-case {
+            height: 312px;
+            width: 360px;
+            border-radius: 3px;
+            background: rgba(0, 0, 0, 0);
+            box-shadow: 0px 2px 10px 1px rgba(0, 0, 0, 0.6), 
+                    inset 0px 0px 20px 2px rgba(0, 0, 0, 0.4), 
+                    inset 0px 0px 5px 1px rgba(255, 255, 255, 0.6), 
+                    inset 0px 0px 0px 1px rgba(255, 255, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .album-bg {
+            height: 100%;
+            width: 100%;
+            border-radius: 3px;
+            background-color: #FFEBD4;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 0;
+            opacity: 0.9; 
+        }
+
+        .album-art {
+            height: 100%;
+            width: 90%;
+            border-radius: 3px;
+            background-color: #FFEBD4;
+            position: absolute;
+            top: 0;
+            right: 0;
+            z-index: 1; 
+            opacity: 0.9;
+            box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 1);
+        }
+
+        .sup {
+            height: 20px;
+            width: 40px;
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: inset 0px 0px 6px 1px rgba(0, 0, 0, 0.22),
+                        inset 0px 0px 1px 1px rgba(255, 255, 255, 0.17);
+            position: absolute;
+            z-index: 3;
+        }
+
+        .pos-tl { top: 0; left: 110px; border-radius: 0 0 5px 5px; }
+        .pos-tr { top: 0; right: 30px; border-radius: 0 0 5px 5px; }
+        .pos-bl { bottom: 0; left: 110px; border-radius: 5px 5px 0 0; }
+        .pos-br { bottom: 0; right: 30px; border-radius: 5px 5px 0 0; }
+
+        .spine {
+            height: 240px;
+            width: 30px;
+            background: linear-gradient(rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.07) 100%);
+            box-shadow: 3px 0px 5px 0px rgba(0, 0, 0, 0.23), 
+                        inset 0px 0px 7px 0px rgba(0, 0, 0, 0.22), 
+                        inset 0px 0px 0px 1px rgba(255, 255, 255, 0.22);
+            position: absolute;
+            left: -20px;
+            top: 50%;
+            transform: translateY(-50%);
+            border-radius: 0 50% 50% 0;
+            z-index: 3;
+        }
+
+        /* Vinyl Record Styling */
+        .vinyl-container {
+            position: relative;
+            width: 400px;
+            height: 400px;
+            margin: 0 auto;
+            transition: all 0.3s ease;
+            transform: translateX(-20px);
+        }
+
+        .vinyl-cover {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 10;
+            width: 100%;
+            height: 100%;
+            background-color: #FFEBD4;
+            box-shadow: 5px 0 20px 0 rgba(0,0,0,0.6),
+                        inset 0 0 10px 5px rgba(255,255,255,0.2),
+                        inset 0 0 4px 2px rgba(0,0,0,0.2);
+            border-radius: 4px;
+            transition: transform 0.5s ease-out;
+            transform-origin: left center;
+            transform: translateX(-20px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .vinyl-record {
+            position: absolute;
+            top: 2.5%;
+            left: 2.5%;
+            z-index: 5;
+            width: 95%;
+            height: 95%;
+            display: block;
+            background-image: url('https://gallery.yopriceville.com/var/resizes/Free-Clipart-Pictures/Music-PNG/Gramophone_Vinyl_LP_Record_PNG_Transparent_Clip_Art_Image.png?m=1462983196');
+            background-size: 106% 106%;
+            background-position: center;
+            box-shadow: 0 0 20px 4px rgba(0,0,0,0.6);
+            border-radius: 50%;
+            content: '';
+            transition: transform 0.5s ease-out;
+            transform: translateX(40px);
+        }
+
+        /* Hover animation for vinyl container */
+        .vinyl-container:hover .vinyl-cover {
+            transform: translateX(-75px);
+        }
+
+        .vinyl-container:hover .vinyl-record {
+            transform: translateX(75px);
+        }
+
+        .watermark {
+            position: fixed;
+            bottom: 0px;
+            left: 20px;
+            font-family: 'Philosophy';
+            font-size: 1rem;
+            color: #FFEBD4;
+        }
+        
+        .spotify-link {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px;
+            border-radius: 100px;
+            background-color: rgba(255, 235, 212, 0.1);
+            transition: background-color 0.3s ease;
+        }
+        
+        .spotify-link:hover {
+            background-color: rgba(255, 235, 212, 0.2);
+        }
+
+        .title-link {
+            text-decoration: none;
+            color: inherit;
+            display: inline-block;
+        }
+
+        .title-link:hover {
+            cursor: pointer;
+            transform: scale(1.01);
+            transition: transform 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <header id="title">
+        <a href="index.html" class="title-link"><h2>khoakhokhao</h2></a>
+        <p class="subtitle">mấy album/EP t thích, nào có tiền thì mua vinyl :))</p>
+        <a href="https://open.spotify.com/user/3n56z0tl36m0g9ybrnmaqtigw" target="_blank" class="spotify-link">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="#FFEBD4" align="left">
+                <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.838-.118-.959-.539-.12-.421.119-.839.54-.959 4.56-1.021 8.52-.6 11.64 1.32.42.18.48.659.36 1.08zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.24 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/>
+            </svg>
+        </a>
+        <p class="watermark">20/2/25 - 10/3/25</p>
+    </header>
+    
+    <div class="button-container">
+        <!-- Button 1: Album View -->
+        <a href="pc-cd-fin.html" class="large-button">
+            <div class="cd-case">
+                <div class="album-bg"></div>
+                <div class="album-art"></div>
+                <div class="cover-text-box">CD ver.</div>
+                <div class="sup pos-tl"></div>
+                <div class="sup pos-tr"></div>
+                <div class="sup pos-bl"></div>
+                <div class="sup pos-br"></div>
+                <div class="spine"></div>
+            </div>
+        </a>
+
+        <a>album y chang khác design</a>
+
+        <!-- Button 2: Vinyl Record -->
+        <a href="pc-vinyl-fin.html" class="large-button">
+            <div class="vinyl-container">
+                <div class="vinyl-cover">
+                    <div class="cover-text-box">Vinyl ver.</div>
+                </div>
+                <div class="vinyl-record"></div>
+            </div>
+        </a>
+    </div>
+
+    <script>
+
+    </script>
+</body>
+</html>
