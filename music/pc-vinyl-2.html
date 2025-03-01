@@ -1,0 +1,1054 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>khzzz's vinyl wishlist</title>
+
+    <style>
+        /* General Page Styling */
+        body {
+            background-color: #F0A8D0;
+            color: #FFEBD4;
+            font-size: 1.6rem;
+            font-family: 'Philosophy';
+            overflow-x: hidden;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            transition: background-color 1s ease;
+        }
+
+        * {
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+        }
+
+        @font-face {
+            font-family: 'Cactus Jack'; 
+            src: url('assets/fonts/CactusJack.otf') format('opentype');
+        }
+        @font-face {
+            font-family: 'Yipes';
+            src: url('assets/fonts/Yipes.otf') format('opentype');
+        }
+        @font-face {
+            font-family: 'Glassure';
+            src: url('assets/fonts/Glassure.otf') format('opentype');
+        }
+        @font-face {
+            font-family: 'Pecita';
+            src: url('assets/fonts/Pecita.otf') format('opentype');
+        }
+        @font-face {
+            font-family: 'Philosophy';
+            src: url('assets/fonts/Philosophy.otf') format('opentype');
+        }
+
+        #title {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: #F0A8D0;
+            text-align: center;
+            z-index: 1000;
+            padding-bottom: 0;
+            box-sizing: border-box;;
+        }
+
+        h1 {
+            font-family: 'Philosophy', sans-serif;
+            font-size: 4rem;
+            color: #FFEBD4;
+            text-align: center;
+        }
+
+        h2 {
+            font-size: 3.75rem;
+            }
+        
+        #title h2 {
+            font-family: 'Glassure';
+            font-size: clamp(2.5rem, 2rem + 2vw, 6rem);
+            color: #FFEBD4;
+            text-align: center;
+            width: 100%;
+            margin: 5px 0 0 0;
+            font-weight: normal;
+        }
+
+        hr {
+            border-color: #FFC6C6; 
+            margin: 5px 0 0 0; 
+            width: 100%;
+        }
+
+        /* Layout */
+        .main-container {
+            display: flex;
+            min-height: 100vh;
+            padding-top: 120px;
+            box-sizing: border-box;
+            padding-bottom: 0;
+            flex-direction: row;
+        }
+
+        /* Left section with album info */
+        .left-section {
+            width: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Middle section with enlarged album */
+        .middle-section {
+            width: 30%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: visible;
+        }
+
+        /* Right section with album slider */
+        .right-section {
+            width: 20%;
+            position: relative;
+            height: calc(100vh - 120px);
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        /* Album Info Box */
+        .album-info {
+        font-family: 'Pecita';
+        font-size: 2rem;
+        color: #FFEBD4;
+        width: 500px;
+        height: 400px;
+        background: rgba(247, 181, 202, 0.7); /* More transparent background */
+        backdrop-filter: blur(8px);
+        padding: 50px;
+        border-radius: 15px;
+        box-shadow: 0 2px 15px rgba(255, 198, 198, 0.6);
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+    
+    /* Add gradient overlay to album info */
+    .album-info::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, transparent 30%, rgba(255, 235, 212, 0.15));
+        z-index: 0;
+    }
+    
+    /* Make content position relative to appear above gradient */
+    .album-info * {
+        position: relative;
+        z-index: 1;
+    }
+
+
+    .album-name {
+        font-family: 'Yipes', sans-serif;
+        font-size: 4.4rem;
+        color: #fff8f0;
+        font-style: bold;
+    }
+
+        .artist-name {
+            font-family: 'Philosophy', sans-serif;
+            font-size: 2rem;
+            color: #FFEBD4;
+        }
+
+        /* Active Album Display */
+        .active-album-display {
+            position: relative;
+            transform-origin: center;
+            transition: transform 0.4s ease, opacity 0.5s ease;
+            opacity: 1;
+        }
+
+        .active-album-display.hidden {
+            opacity: 0;
+            transform: scale(0.8);
+        }
+
+        .active-album-display.show {
+            opacity: 1;
+            transform: scale(1);
+        }
+        
+        .album-bg {
+            height: 100%;
+            width: 100%;
+            border-radius: 3px;
+            background-size: cover;
+            background-position: center;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 0;
+            filter: blur(3px);
+            opacity: 0.5; 
+        }
+
+        .album-art {
+            height: 100%;
+            width: 90%;
+            border-radius: 3px;
+            background-size: cover;
+            background-position: center;
+            position: absolute;
+            top: 0;
+            right: 0;
+            z-index: 1; 
+            opacity: 0.9;
+            box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 1);
+        }
+
+        /* Half-circle Album Slider Container */
+        #circle-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #half-circle {
+            width: 500px;
+            height: 250px; /* Half the total diameter */
+            position: relative;
+            margin-left: -150px;
+            overflow: visible;
+        }
+
+        /* Album item positioning for half-circle */
+        .album-item {
+            position: absolute;
+            transition: all 0.3s ease;
+            transform-origin: center;
+        }
+
+        .album-item[data-active="true"] .circle-cd-case {
+        filter: brightness(1.2); /* Brighter for active album */
+        transform: scale(1.15); /* Slightly bigger for active album */
+    }
+    .circle-cd-case {
+    height: 103px;
+    width: 115px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.5);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    filter: brightness(0.7);
+}
+
+.circle-cd-case:hover {
+    transform: scale(1.1);
+    filter: brightness(0.9);
+}
+
+.circle-album-art {
+    height: 100%;
+    width: 100%;
+    border-radius: 4px;
+    background-size: cover;
+    background-position: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 1;
+}
+
+
+    .subtitle {
+        font-family: 'Cactus Jack';
+        font-size: clamp(1.5rem, 1rem + 1vw, 3rem);
+        color: #FFEBD4;
+        text-align: center;
+        margin: 0;
+        padding: 0;
+    }
+    
+    /* Add the Spotify button styling */
+    .spotify-link {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 10px;
+        border-radius: 100px;
+        background-color: rgba(255, 235, 212, 0.1);
+        transition: background-color 0.3s ease;
+    }
+    
+    .spotify-link:hover {
+        background-color: rgba(255, 235, 212, 0.2);
+    }
+
+    .watermark {
+        position: fixed;
+        bottom: 0px;
+        left: 20px;
+        font-family: 'Philosophy';
+        font-size: 1rem;
+        color: #FFEBD4;
+    }
+
+/* Vinyl Record Styling - Fixed */
+.vinyl-container {
+    position: relative;
+    width: 460px;
+    height: 460px;
+    margin: 0 auto;
+    transition: all 0.3s ease;
+    transform: translateX(-40px);
+}
+
+.vinyl-cover {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 10;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    box-shadow: 5px 0 20px 0 rgba(0,0,0,0.6),
+                inset 0 0 10px 5px rgba(255,255,255,0.2),
+                inset 0 0 4px 2px rgba(0,0,0,0.2);
+    border-radius: 4px;
+    transition: transform 0.5s ease-out;
+    transform-origin: left center;
+    /* Initially shifted slightly to the right */
+    transform: translateX(-20px);
+}
+
+.vinyl-record {
+    position: absolute;
+    top: 2.5%;
+    left: 2.5%;
+    z-index: 5;
+    width: 95%;
+    height: 95%;
+    display: block;
+    background-image: url('https://gallery.yopriceville.com/var/resizes/Free-Clipart-Pictures/Music-PNG/Gramophone_Vinyl_LP_Record_PNG_Transparent_Clip_Art_Image.png?m=1462983196');
+    background-size: 106% 106%;
+    background-position: center;
+    box-shadow: 0 0 20px 4px rgba(0,0,0,0.6);
+    border-radius: 50%;
+    content: '';
+    /* Remove the animation completely */
+    transition: transform 0.5s ease-out;
+    /* Show more of the vinyl initially */
+    transform: translateX(40px);
+}
+
+/* Improved smooth sliding hover animation */
+.vinyl-container:hover .vinyl-cover {
+    transform: translateX(-100px);
+}
+
+.vinyl-container:hover .vinyl-record {
+    transform: translateX(100px); 
+}
+
+.vinyl-container {
+    cursor: pointer;
+    position: relative;
+}
+
+.spotify-indicator {
+    position: absolute;
+    bottom: 20px;
+    right: 125px;
+    z-index: 20;
+    width: 40px;
+    height: 40px;
+    background-color: rgba(255, 235, 212, 0.15);
+    border-radius: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity .2s ease-in, background-color .2s ease-in;
+}
+
+.vinyl-container:hover .spotify-indicator {
+    opacity: 1;
+    background-color: rgba(255, 235, 212, 0.3);
+}
+
+/* Adjust active album display to avoid overlap */
+.middle-section {
+    padding-right: 30px;
+    overflow: visible;
+}
+
+.active-album-display {
+    transform-origin: left center;
+}
+
+/* Make sure the vinyl container appears and disappears smoothly */
+.active-album-display.hidden .vinyl-container {
+    opacity: 0;
+    transform: scale(0.8) translateX(-40px);
+}
+
+.active-album-display.show .vinyl-container {
+    opacity: 1;
+    transform: scale(1) translateX(-40px);
+}
+
+/* Adjust active album display to avoid overlap */
+.middle-section {
+    padding-right: 30px;
+    overflow: visible;
+}
+
+.active-album-display {
+    transform-origin: left center;
+}
+
+/* Make sure the vinyl container appears and disappears smoothly */
+.active-album-display.hidden .vinyl-container {
+    opacity: 0;
+    transform: scale(0.8) translateX(-40px);
+}
+
+.active-album-display.show .vinyl-container {
+    opacity: 1;
+    transform: scale(1) translateX(-40px);
+}
+
+.nav-buttons {
+    position: fixed;
+    top: 30px;
+    left: 20px;
+    display: flex;
+    gap: 20px;
+    z-index: 1000;
+}
+
+.nav-button {
+    width: 70px;
+    height: 70px;
+    display: block;
+    transition: all 0.3s ease;
+}
+
+.nav-button:hover {
+    transform: scale(1.1);
+    filter: drop-shadow(0 0 5px rgba(240, 168, 208, 0.5));
+}
+
+.title-link {
+    text-decoration: none;
+    color: inherit;
+    display: inline-block;
+    }
+
+.title-link:hover {
+    cursor: pointer;
+    transform: scale(1.01);
+    transition: transform 0.3s ease;
+    }
+
+    </style>
+</head>
+<body>
+    <header id="title">
+        <a href="index.html" class="title-link"><h2>khoakhokhao</h2></a>
+        <p class="subtitle">mấy album/EP t thích, nào có tiền thì mua đĩa :))</p>
+        <a href="https://open.spotify.com/user/3n56z0tl36m0g9ybrnmaqtigw" target="_blank" class="spotify-link">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="#FFEBD4" align="left">
+                <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.838-.118-.959-.539-.12-.421.119-.839.54-.959 4.56-1.021 8.52-.6 11.64 1.32.42.18.48.659.36 1.08zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.24 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/>
+            </svg>
+        </a>
+      
+        <div class="nav-buttons">
+            <a href="pc-cd-fin.html" class="nav-button">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40">
+                    <!-- CD Case -->
+                    <defs>
+                        <linearGradient id="caseShine" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="rgba(255,255,255,0.7)"/>
+                            <stop offset="50%" stop-color="rgba(255,255,255,0.1)"/>
+                            <stop offset="100%" stop-color="rgba(255,255,255,0.3)"/>
+                        </linearGradient>
+                    </defs>
+                    
+                    <!-- Outer case -->
+                    <rect x="4" y="4" width="32" height="32" rx="2" ry="2" fill="#FFEBD4" stroke="#F0A8D0" stroke-width="0.5"/>
+                    
+                    <!-- Clear plastic cover effect -->
+                    <rect x="5" y="5" width="30" height="30" rx="1.5" ry="1.5" fill="rgba(255,255,255,0.2)" stroke="#F0A8D0" stroke-width="0.2"/>
+                    
+                    <!-- CD inside case -->
+                    <circle cx="20" cy="20" r="14" fill="#FFEBD4" stroke="#F0A8D0" stroke-width="0.5"/>
+                    
+                    <!-- CD inner circles -->
+                    <circle cx="20" cy="20" r="4" fill="#F0A8D0"/>
+                    <circle cx="20" cy="20" r="2" fill="#FFEBD4"/>
+                    <circle cx="20" cy="20" r="1" fill="#F0A8D0"/>
+                    
+                    <!-- Case shine reflection -->
+                    <path d="M5,5 L10,10 L30,10 L35,5 Z" fill="url(#caseShine)" opacity="0.3"/>
+                    <path d="M5,35 L10,30 L30,30 L35,35 Z" fill="url(#caseShine)" opacity="0.2"/>
+                    
+                    <!-- Case spine -->
+                    <rect x="4" y="4" width="3" height="32" fill="#FFEBD4" stroke="#F0A8D0" stroke-width="0.5"/>
+                    
+                    <!-- Case clip -->
+                    <circle cx="6" cy="20" r="1.5" fill="#F0A8D0" stroke="#FFEBD4" stroke-width="0.3"/>
+                </svg>
+            </a>
+        </div>
+        <p class="watermark">20/2/25 - 10/3/25</p>
+    </header>
+    <div class="main-container">
+        <!-- Left section with album info -->
+        <div class="left-section">
+            <div class="album-info" id="album-info">
+                <h2>scroll through !</h2>
+            </div>
+        </div>
+        
+        <!-- Middle section with enlarged active album -->
+        <div class="middle-section">
+            <div class="active-album-display" id="active-album-display"></div>
+        </div>
+        
+        <!-- Right section with half-circle album list -->
+        <div class="right-section">
+            <div id="circle-container">
+                <div id="half-circle"></div>
+                <!-- albums will be added here by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+    const albumInfo = document.getElementById("album-info");
+    const activeAlbumDisplay = document.getElementById("active-album-display");
+    const circleContainer = document.getElementById("circle-container");
+    const halfCircle = document.getElementById("half-circle");
+    const body = document.body;
+
+    // List of albums with individual links
+    const albums = [
+                { img: "album107.jpg", link: "https://open.spotify.com/album/1weenld61qoidwYuZ1GESA", name: "Kind of Blue", artist: "Miles Davis", rating: "999/10" },
+                { img: "album65.jpg", link: "https://open.spotify.com/album/182D7nDZqcYghZKQxnSJ03", name: "nostalgia, ULTRA.", artist: "Frank Ocean", rating: "10/10 unreleased" },
+                { img: "album1.jpg", link: "https://open.spotify.com/album/5EYKrEDnKhhcNxGedaRQeK", name: "eternal sunshine", artist: "Ariana Grande", rating: "9/10" },
+                { img: "album2.jpg", link: "https://open.spotify.com/album/0rnW4hH24v4j16wUbeR5Tn", name: "early twenties", artist: "Cat Burns", rating: "8.5/10" },
+                { img: "album3.jpg", link: "https://open.spotify.com/album/6MH3CAXp8AN8ELrbex18dM", name: "Deathconsciousness", artist: "Have A  Nice Life", rating: "9/10" },
+                { img: "album4.jpg", link: "https://open.spotify.com/album/2fenSS68JI1h4Fo296JfGr", name: "folklore", artist: "Taylor Swift", rating: "8.8/10" },
+                { img: "album5.jpg", link: "https://open.spotify.com/album/7txGsnDSqVMoRl6RQ9XyZP", name: "HEROES & VILLAINS", artist: "Metro Boomin", rating: "9.9/10" },
+      ];
+
+    // Reset and configure container styles
+    circleContainer.style.position = "relative";
+    circleContainer.style.width = "100%";
+    circleContainer.style.height = "100%";
+    circleContainer.style.overflow = "visible";
+    
+    halfCircle.style.position = "absolute";
+    halfCircle.style.right = "-150px"; // Move further to the right (negative value pushes it right)
+    halfCircle.style.top = "50%";
+    halfCircle.style.transform = "translateY(-50%)";
+    halfCircle.style.width = "250px"; 
+    halfCircle.style.height = "500px";
+    halfCircle.style.overflow = "visible";
+    
+    // C-shaped curve configuration
+    const radius = 250;
+    const centerX = 90; // Position at right edge
+    const centerY = halfCircle.offsetHeight / 2;
+    
+    // Set initial active album
+    let activeIndex = 0;
+    let currentRotation = 0; // Current rotation angle for the C-shape
+    
+    // C-shaped configuration - using a narrower arc than half-circle
+    const visibleCount = 7; // Increased visible count for C shape
+    const totalAngle = Math.PI * 0.7; // About 126 degrees (narrower than half-circle)
+    const angleStep = totalAngle / (visibleCount - 1);
+    const startAngleOffset = Math.PI * 0.15; // Start angle offset for C shape
+    
+   // Create album items 
+albums.forEach((album, i) => {
+    const albumItem = document.createElement('div');
+    albumItem.className = 'album-item';
+    albumItem.dataset.index = i;
+    
+    // Create simplified album cover within item
+    albumItem.innerHTML = `
+        <div class="circle-cd-case">
+            <div class="circle-album-art" style="background-image: url('assets/Albums/${album.img}');"></div>
+        </div>
+    `;
+    
+    // Add event listeners
+    albumItem.addEventListener('click', function() {
+        const index = parseInt(this.dataset.index);
+        setActiveAlbum(index);
+    });
+    
+    // Append to half-circle
+    halfCircle.appendChild(albumItem);
+});
+    
+// Function to position all items based on current active index
+    function positionItems() {
+    const items = document.querySelectorAll('.album-item');
+    
+    items.forEach((item, i) => {
+        // Mark active album for styling
+        if (i === activeIndex) {
+            item.setAttribute('data-active', 'true');
+        } else {
+            item.setAttribute('data-active', 'false');
+        }
+        
+        // Calculate position in the array considering looping
+        let distanceFromActive = (i - activeIndex + albums.length) % albums.length;
+        
+        // Ensure we get the shortest path (in either direction)
+        if (distanceFromActive > albums.length / 2) {
+            distanceFromActive -= albums.length;
+        }
+        
+        const absDistance = Math.abs(distanceFromActive);
+        const isVisible = absDistance <= Math.floor(visibleCount/2);
+        
+        if (isVisible) {  
+            // Modified curve positioning
+            const startAngle = Math.PI / 2;  // Start from top
+            const endAngle = -Math.PI / 2;   // End at bottom
+            const angleRange = startAngle - endAngle;
+            
+            // Calculate position on the arc
+            let normalizedPosition = distanceFromActive / Math.floor(visibleCount/2);
+            normalizedPosition = Math.max(-1, Math.min(1, normalizedPosition)); // Clamp between -1 and 1
+            
+            // Calculate angle
+            const angle = startAngle - (normalizedPosition + 1) / 2 * angleRange;
+            
+            // Position calculation with adjusted centerX
+            const x = centerX - radius * Math.cos(angle);
+            const y = centerY + radius * Math.sin(angle);
+            
+            // Position the item
+            item.style.left = `${x}px`;
+            item.style.top = `${y}px`;
+            
+            // Scale and opacity based on distance from active
+            const scale = 1 - (absDistance * 0.15);
+            const opacity = 1 - (absDistance * 0.2);
+            
+            // Apply styles
+            item.style.transform = `translate(-50%, -50%)`;
+            item.style.opacity = opacity;
+            item.style.zIndex = 100 - absDistance;
+            item.style.display = 'block';
+            
+            // Scale the CD case while maintaining the brightness difference 
+            const cdCase = item.querySelector('.circle-cd-case');
+            cdCase.style.transform = `scale(${scale})`;
+        } else {
+            // Hide items not in view
+            item.style.display = 'none';
+        }
+    });
+}
+    
+// Function to set active album with animation
+function setActiveAlbum(index) {
+    // Implement looping - wrap around to beginning or end
+    if (index < 0) {
+        index = albums.length - 1;
+    } else if (index >= albums.length) {
+        index = 0;
+    }
+    
+    if (index !== activeIndex) {
+        // Fade out current display
+        activeAlbumDisplay.classList.add('hidden');
+        
+        // Calculate shortest path to target index
+        let distance = index - activeIndex;
+        
+        // Handle wrapping for shortest path
+        if (Math.abs(distance) > albums.length / 2) {
+            if (distance > 0) {
+                distance = distance - albums.length;
+            } else {
+                distance = albums.length + distance;
+            }
+        }
+        
+        // Animate through intermediate positions for distant albums
+        if (Math.abs(distance) > 1) {
+            // Store final target
+            const targetIndex = index;
+            
+            // Create animation for intermediate steps
+            let currentStep = 0;
+            const totalSteps = Math.min(Math.abs(distance), 5);  // Limit to 5 steps max
+            const stepDirection = distance > 0 ? 1 : -1;
+            
+            const animateStep = () => {
+                currentStep++;
+                
+                if (currentStep < totalSteps) {
+                    // Calculate intermediate index with looping
+                    const nextIndex = (activeIndex + stepDirection) % albums.length;
+                    activeIndex = nextIndex < 0 ? albums.length + nextIndex : nextIndex;
+                    
+                    // Update positions
+                    positionItems();
+                    
+                    // Continue animation
+                    setTimeout(animateStep, 100);
+                } else {
+                    // Final step - update everything
+                    setTimeout(() => {
+                        activeIndex = targetIndex;
+                        updateActiveAlbumDisplay(albums[activeIndex]);
+                        positionItems();
+                    }, 100);
+                }
+            };
+            
+            // Start animation
+            animateStep();
+        } else {
+            // For adjacent albums, just do a simple transition
+            setTimeout(() => {
+                activeIndex = index;
+                updateActiveAlbumDisplay(albums[activeIndex]);
+                positionItems();
+            }, 300);
+        }
+    } else {
+        // Already active, just update display
+        updateActiveAlbumDisplay(albums[activeIndex]);
+    }
+}
+
+// Update the active album display and info
+function updateActiveAlbumDisplay(album) {
+    // Update info box
+    albumInfo.innerHTML = `
+        <span class="album-name">${album.name}</span><br>
+        <span class="artist-name">${album.artist}</span><br>
+        ${album.rating}
+    `;
+activeAlbumDisplay.innerHTML = `
+    <a href="${album.link}" target="_blank">
+        <div class="vinyl-container">
+            <div class="vinyl-cover" style="background-image: url('assets/Albums/${album.img}');"></div>
+            <div class="vinyl-record">
+                <div class="vinyl-label" style="background-image: url('assets/Albums/${album.img}');"></div>
+            </div>
+            <div class="spotify-indicator">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="#FFEBD4">
+                    <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.838-.118-.959-.539-.12-.421.119-.839.54-.959 4.56-1.021 8.52-.6 11.64 1.32.42.18.48.659.36 1.08zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.24 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/>
+                </svg>
+            </div>
+        </div>
+    </a>
+`;
+    
+    // Show with animation
+    activeAlbumDisplay.classList.remove('hidden');
+    activeAlbumDisplay.classList.add('show');
+    
+    // Update background color
+    updateColors(album.img);
+}
+
+// Function to update background and text colors based on album cover
+function updateColors(image) {
+    const img = new Image();
+    img.crossOrigin = "Anonymous";
+    img.src = `assets/Albums/${image}`;
+    
+    img.onload = function() {
+        const colors = getImageColors(img);
+        const dominant = colors.dominant;
+        const vibrantColors = colors.vibrantColors; // Get array of vibrant colors from the image
+        
+        // Update body background with dominant color
+        body.style.backgroundColor = `rgb(${dominant.r}, ${dominant.g}, ${dominant.b})`;
+        
+        // Keep header background color fixed
+        document.getElementById('title').style.backgroundColor = '#F0A8D0';
+        
+        // Create a semi-transparent version of dominant color for info box
+        const albumInfo = document.getElementById('album-info');
+        const infoBoxColor = {
+            r: Math.min(dominant.r + 20, 255),
+            g: Math.min(dominant.g + 20, 255),
+            b: Math.min(dominant.b + 20, 255)
+        };
+        
+        // Apply the color with transparency for the info box
+        albumInfo.style.background = `rgba(${infoBoxColor.r}, ${infoBoxColor.g}, ${infoBoxColor.b}, 0.7)`;
+        albumInfo.style.boxShadow = `0 2px 15px rgba(${infoBoxColor.r}, ${infoBoxColor.g}, ${infoBoxColor.b}, 0.6)`;
+        
+        // Calculate brightness of the info box background
+        const bgBrightness = (infoBoxColor.r * 299 + infoBoxColor.g * 587 + infoBoxColor.b * 114) / 1000;
+        
+        // Select the most vibrant color that has good contrast with the background
+        let bestTextColor = null;
+        let bestContrastScore = 0;
+        
+        // Try each vibrant color to find the best one
+        for (const color of vibrantColors) {
+            // Calculate brightness of this color
+            const colorBrightness = (color.r * 299 + color.g * 587 + color.b * 114) / 1000;
+            
+            // Calculate contrast (difference in brightness)
+            const contrastDiff = Math.abs(bgBrightness - colorBrightness);
+            
+            // Calculate saturation/colorfulness
+            const colorfulness = Math.abs(color.r - color.g) + 
+                                Math.abs(color.r - color.b) + 
+                                Math.abs(color.g - color.b);
+            
+            // Combined score favoring both contrast and colorfulness
+            const contrastScore = contrastDiff * 1.5 + colorfulness * 0.5;
+            
+            if (contrastScore > bestContrastScore) {
+                bestContrastScore = contrastScore;
+                bestTextColor = color;
+            }
+        }
+        
+        // If no good vibrant color found, fallback to black or white based on background
+        if (!bestTextColor || bestContrastScore < 100) {
+            bestTextColor = bgBrightness > 125 ? 
+                { r: 30, g: 30, b: 30 } : 
+                { r: 245, g: 245, b: 245 };
+        }
+        
+        // Apply text colors
+        const textColor = `rgb(${bestTextColor.r}, ${bestTextColor.g}, ${bestTextColor.b})`;
+        
+        // Apply to album info elements
+        const albumNameEl = albumInfo.querySelector('.album-name');
+        const artistNameEl = albumInfo.querySelector('.artist-name');
+        
+        if (albumNameEl) albumNameEl.style.color = textColor;
+        if (artistNameEl) artistNameEl.style.color = textColor;
+        
+        // Apply to remaining text in album info
+        albumInfo.style.color = textColor;
+    };
+}
+
+// Enhanced function to get dominant and vibrant colors from image
+function getImageColors(img) {
+    const canvas = document.createElement("canvas");
+    const ctx = canvas.getContext("2d");
+    
+    canvas.width = img.width;
+    canvas.height = img.height;
+    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+    
+    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+    let allColors = [];
+    
+    // Sample colors from the image (sample more points for better color representation)
+    for (let i = 0; i < imageData.length; i += 4 * 25) { // Sample more frequently
+        // Skip transparent pixels
+        if (imageData[i + 3] < 128) continue;
+        
+        const r = imageData[i];
+        const g = imageData[i + 1];
+        const b = imageData[i + 2];
+        
+        allColors.push({ r, g, b });
+    }
+    
+    // Calculate the average (dominant) color
+    let dominant = { r: 0, g: 0, b: 0 };
+    allColors.forEach(color => {
+        dominant.r += color.r;
+        dominant.g += color.g;
+        dominant.b += color.b;
+    });
+    
+    dominant.r = Math.floor(dominant.r / allColors.length);
+    dominant.g = Math.floor(dominant.g / allColors.length);
+    dominant.b = Math.floor(dominant.b / allColors.length);
+    
+    // Filter for vibrant colors
+    let vibrantColors = allColors.filter(color => {
+        // Calculate colorfulness
+        const colorfulness = Math.abs(color.r - color.g) + 
+                            Math.abs(color.r - color.b) + 
+                            Math.abs(color.g - color.b);
+        
+        // Only include reasonably colorful pixels
+        return colorfulness > 45;
+    });
+    
+    // If we don't have enough vibrant colors, add some artificially
+    if (vibrantColors.length < 5) {
+        // Add complementary color of dominant
+        vibrantColors.push({
+            r: 255 - dominant.r,
+            g: 255 - dominant.g,
+            b: 255 - dominant.b
+        });
+        
+        // Add a warm color variant
+        vibrantColors.push({
+            r: Math.min(dominant.r * 1.4, 255),
+            g: Math.min(dominant.g * 0.8, 255),
+            b: Math.min(dominant.b * 0.8, 255)
+        });
+        
+        // Add a cool color variant
+        vibrantColors.push({
+            r: Math.min(dominant.r * 0.8, 255),
+            g: Math.min(dominant.g * 0.9, 255),
+            b: Math.min(dominant.b * 1.4, 255)
+        });
+    }
+    
+    return { 
+        dominant,
+        vibrantColors
+    };
+}
+
+// Handle mouse wheel scrolling with looping
+    halfCircle.addEventListener('wheel', function(e) {
+        e.preventDefault();
+        
+        // Determine direction
+        const direction = e.deltaY > 0 ? 1 : -1;
+        
+        // Calculate next index with looping
+        let nextIndex = activeIndex + direction;
+        
+        // Implement looping
+        if (nextIndex < 0) {
+            nextIndex = albums.length - 1;
+        } else if (nextIndex >= albums.length) {
+            nextIndex = 0;
+        }
+        
+        setActiveAlbum(nextIndex);
+    });
+    
+    // Add touch support for mobile
+    halfCircle.addEventListener('touchstart', function(e) {
+        isDragging = true;
+        startY = e.touches[0].clientY;
+        lastY = e.touches[0].clientY;
+        lastDragTime = Date.now();
+        dragStartIndex = activeIndex;
+        dragVelocity = 0;
+        
+        // Prevent default to avoid scroll/zoom
+        e.preventDefault();
+    });
+    
+    document.addEventListener('touchmove', function(e) {
+        if (!isDragging) return;
+        
+        // Get touch position
+        const touchY = e.touches[0].clientY;
+        
+        // Calculate vertical drag distance
+        const dy = touchY - startY;
+        
+        // Calculate drag velocity for momentum
+        const now = Date.now();
+        const dt = now - lastDragTime;
+        if (dt > 0) {
+            dragVelocity = (touchY - lastY) / dt * 20;
+        }
+        lastY = touchY;
+        lastDragTime = now;
+        
+        // Convert to album index change
+        const indexChange = Math.floor(dy / 40);
+        
+        if (indexChange !== 0) {
+            // Apply the change with looping
+            let newIndex = (dragStartIndex - indexChange + albums.length) % albums.length;
+            
+            setActiveAlbum(newIndex);
+            
+            // Reset start point to prevent jumps
+            startY = touchY;
+            dragStartIndex = newIndex;
+        }
+        
+        // Prevent default to avoid page scrolling
+        e.preventDefault();
+    });
+    
+    document.addEventListener('touchend', function() {
+        if (isDragging) {
+            isDragging = false;
+            
+            // Apply momentum effect on release
+            if (Math.abs(dragVelocity) > 0.5) {
+                const direction = dragVelocity > 0 ? 1 : -1;
+                const momentum = Math.min(Math.abs(Math.round(dragVelocity)), 5);
+                
+                let momentumStep = 0;
+                const momentumInterval = setInterval(() => {
+                    momentumStep++;
+                    if (momentumStep > momentum) {
+                        clearInterval(momentumInterval);
+                        return;
+                    }
+                    
+                    let nextIndex = (activeIndex + direction + albums.length) % albums.length;
+                    setActiveAlbum(nextIndex);
+                }, 150);
+            }
+        }
+    });
+
+    // Handle resize
+    window.addEventListener('resize', positionItems);
+
+    // Initialize the display
+    updateActiveAlbumDisplay(albums[activeIndex]);
+    positionItems();
+});
+    </script>
+</body>
+</html>

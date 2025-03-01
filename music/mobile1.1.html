@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>khoakhokhao</title>
+
+    <style>
+        /* General Page Styling */
+        body {
+            background-color: #F0A8D0;
+            color: #FFEBD4;
+            font-size: 1.2rem;
+            font-family: 'Ladybird';
+            overflow-x: hidden;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            transition: background-color 1s ease;
+        }
+
+        * {
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+        }
+
+        @font-face {
+            font-family: 'Cactus Jack'; 
+            src: url('assets/fonts/CactusJack.otf') format('opentype');
+        }
+        @font-face {
+            font-family: 'Yipes';
+            src: url('assets/fonts/Yipes.otf') format('opentype');
+        }
+        @font-face {
+            font-family: 'Glassure';
+            src: url('assets/fonts/Glassure.otf') format('opentype');
+        }
+        @font-face {
+            font-family: 'Purenotes';
+            src: url('assets/fonts/Purenotes.otf') format('opentype');
+        }
+        @font-face {
+            font-family: 'Ladybird';
+            src: url('assets/fonts/Ladybird.otf') format('opentype');
+        }
+
+        #title {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: #F0A8D0;
+            text-align: center;
+            z-index: 1000;
+            padding: 8px 0;
+            box-sizing: border-box;
+        }
+
+        h1 {
+            font-family: 'Rubik Doodle Shadow', sans-serif;
+            font-size: 2.5rem;
+            color: #FFEBD4;
+            text-align: center;
+        }
+        
+        #title h2 {
+            font-family: 'Glassure';
+            font-size: 3.5rem;
+            color: #FFEBD4;
+            text-align: center;
+            width: 100%;
+            margin: 0;
+            line-height: 1;
+        }
+
+        hr {
+            border-color: #FFC6C6; 
+            margin: 5px 0 0 0; 
+            width: 100%;
+        }
+
+        /* Mobile Layout */
+        .main-container {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            padding-top: 90px;
+            box-sizing: border-box;
+        }
+
+        /* Top section with album info */
+        .top-section {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        /* Middle section with enlarged album */
+        .middle-section {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px;
+            box-sizing: border-box;
+            flex-grow: 1;
+        }
+
+        /* Bottom section with album slider */
+        .bottom-section {
+            width: 100%;
+            height: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding-bottom: 20px;
+            box-sizing: border-box;
+            position: relative;
+        }
+
+        /* Album Info Box */
+        .album-info {
+            font-family: 'Purenotes', sans-serif;
+            font-size: 1.8rem;
+            color: #FFEBD4;
+            width: 90%;
+            max-width: 350px;
+            background: rgba(247, 181, 202, 0.7);
+            backdrop-filter: blur(8px);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 2px 15px rgba(255, 198, 198, 0.6);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            margin: 0 auto;
+        }
+    
+        /* Add gradient overlay to album info */
+        .album-info::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, transparent 30%, rgba(255, 235, 212, 0.15));
+            z-index: 0;
+        }
+    
+        /* Make content position relative to appear above gradient */
+        .album-info * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .album-name {
+            font-family: 'Yipes', sans-serif;
+            font-size: 3.5rem;
+            color: #fff8f0;
+            line-height: 1;
+        }
+
+        .artist-name {
+            font-family: 'Ladybird', sans-serif;
+            font-size: 2.5rem;
+            color: #FFEBD4;
+            line-height: 1.2;
+        }
+
+        /* Active Album Display */
+        .active-album-display {
+            position: relative;
+            transform-origin: center;
+            transition: transform 0.4s ease, opacity 0.5s ease;
+            opacity: 1;
+        }
+
+        .active-album-display.hidden {
+            opacity: 0;
+            transform: scale(0.8);
+        }
+
+        .active-album-display.show {
+            opacity: 1;
+            transform: scale(1);
+        }
+        
+        /* CD Case Styling */
+        .cd-case {
+            height: 176px;
+            width: 200px;
+            margin: 10px auto;
+            display: block;
+            border-radius: 3px;
+            background: rgba(0, 0, 0, 0);
+            box-shadow: 0px 2px 10px 1px rgba(0, 0, 0, 0.6), 
+                    inset 0px 0px 20px 2px rgba(0, 0, 0, 0.4), 
+                    inset 0px 0px 5px 1px rgba(255, 255, 255, 0.6), 
+                    inset 0px 0px 0px 1px rgba(255, 255, 255, 0.2);
+            transition: transform 0.3s ease-in-out, filter 0.3s ease-in-out;
+            position: relative;
+            z-index: 2;
+            overflow: hidden;
+        }
+
+        .cd-case:hover {
+            transform: scale(1.05);
+            cursor: pointer;
+        }
+
+        /* Enlarged CD Case */
+        .enlarged-case {
+            height: 280px;
+            width: 320px;
+            transform: scale(1);
+            filter: brightness(1) !important;
+        }
+
+        .album-bg {
+            height: 100%;
+            width: 100%;
+            border-radius: 3px;
+            background-size: cover;
+            background-position: center;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 0;
+            filter: blur(3px);
+            opacity: 0.5; 
+        }
+
+        .album-art {
+            height: 100%;
+            width: 90%;
+            border-radius: 3px;
+            background-size: cover;
+            background-position: center;
+            position: absolute;
+            top: 0;
+            right: 0;
+            z-index: 1; 
+            opacity: 0.9;
+            box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 1);
+        }
+
+        .sup {
+            height: 10px;
+            width: 20px;
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: inset 0px 0px 6px 1px rgba(0, 0, 0, 0.22),
+                        inset 0px 0px 1px 1px rgba(255, 255, 255, 0.17);
+            position: absolute;
+            z-index: 3;
+        }
+
+        /* Enlarged sup elements */
+        .enlarged-case .sup {
+            height: 15px;
+            width: 30px;
+        }
+
+        .pos-tl { top: 0; left: 60px; border-radius: 0 0 5px 5px; }
+        .pos-tr { top: 0; right: 10px; border-radius: 0 0 5px 5px; }
+        .pos-bl { bottom: 0; left: 60px; border-radius: 5px 5px 0 0; }
+        .pos-br { bottom: 0; right: 10px; border-radius: 5px 5px 0 0; }
+
+        /* Adjusted positions for enlarged case */
+        .enlarged-case .pos-tl { left: 90px; }
+        .enlarged-case .pos-tr { right: 20px; }
+        .enlarged-case .pos-bl { left: 90px; }
+        .enlarged-case .pos-br { right: 20px; }
+
+        .spine {
+            height: 120px;
+            width: 15px;
+            background: linear-gradient(rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.07) 100%);
+            box-shadow: 3px 0px 5px 0px rgba(0, 0, 0, 0.23), 
+                        inset 0px 0px 7px 0px rgba(0, 0, 0, 0.22), 
+                        inset 0px 0px 0px 1px rgba(255, 255, 255, 0.22);
+            position: absolute;
+            left: -10px;
+            top: 50%;
+            transform: translateY(-50%);
+            border-radius: 0 50% 50% 0;
+            z-index: 3;
+        }
+
+        /* Enlarged spine */
+        .enlarged-case .spine {
+            height: 180px;
+            width: 20px;
+            left: -15px;
+        }
+
+        /* Horizontal Album Slider Container */
+        #circle-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        #half-circle {
+            position: relative;
+            width: 100%;
+            height: 100px;
+            overflow: visible;
+        }
+
+        /* Album item positioning for half-circle */
+        .album-item {
+            position: absolute;
+            transition: all 0.3s ease;
+            transform-origin: center;
+        }
+
+        .album-item[data-active="true"] .circle-cd-case {
+            filter: brightness(1.2); /* Brighter for active album */
+            transform: scale(1.15); /* Slightly bigger for active album */
+        }
+
+        .circle-cd-case {
+            height: 80px;
+            width: 90px;
+            border-radius: 2px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0px 2px 5px 1px rgba(0, 0, 0, 0.6), 
+                    inset 0px 0px 10px 1px rgba(0, 0, 0, 0.4), 
+                    inset 0px 0px 3px 1px rgba(255, 255, 255, 0.6);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            transition: transform 0.3s ease, filter 0.3s ease;
+            filter: brightness(0.7);
+        }
+
+        .circle-cd-case:hover {
+            transform: scale(1.1);
+        }
+
+        .circle-album-art {
+            height: 100%;
+            width: 90%;
+            border-radius: 2px;
+            background-size: cover;
+            background-position: center;
+            position: absolute;
+            top: 0;
+            right: 0;
+            opacity: 0.9;
+            box-shadow: inset 0px 0px 5px rgba(0, 0, 0, 1);
+        }
+
+        .circle-spine {
+            height: 50px;
+            width: 6px;
+            background: linear-gradient(rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.07) 100%);
+            box-shadow: 2px 0px 3px 0px rgba(0, 0, 0, 0.23), 
+                        inset 0px 0px 4px 0px rgba(0, 0, 0, 0.22), 
+                        inset 0px 0px 0px 1px rgba(255, 255, 255, 0.22);
+            position: absolute;
+            left: -4px;
+            top: 50%;
+            transform: translateY(-50%);
+            border-radius: 0 50% 50% 0;
+            z-index: 3;
+        }
+
+        .subtitle {
+            font-family: 'Cactus Jack';
+            font-size: 1.6rem;
+            color: #FFEBD4;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            line-height: 1.2;
+        }
+    
+        /* Add the Spotify button styling */
+        .spotify-link {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px;
+            border-radius: 100px;
+            background-color: rgba(255, 235, 212, 0.1);
+            transition: background-color 0.3s ease;
+            z-index: 1001;
+        }
+    
+        .spotify-link:hover {
+            background-color: rgba(255, 235, 212, 0.2);
+        }
+
+        /* Modal for confirmation */
+        .redirect-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background-color: #F0A8D0;
+            color: #FFEBD4;
+            padding: 20px;
+            border-radius: 15px;
+            width: 80%;
+            max-width: 300px;
+            text-align: center;
+            font-family: 'Ladybird';
+        }
+
+        .modal-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .modal-button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 20px;
+            background-color: #FFEBD4;
+            color: #F0A8D0;
+            font-family: 'Ladybird';
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        .modal-button:hover {
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+    <header id="title">
+        <h2>khoakhokhao</h2>
+        <p class="subtitle">mấy album t thích, nào có tiền thì mua đĩa hihi</p>
+        <a href="https://open.spotify.com/user/3n56z0tl36m0g9ybrnmaqtigw" target="_blank" class="spotify-link">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="#FFEBD4">
+                <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.838-.118-.959-.539-.12-.421.119-.839.54-.959 4.56-1.021 8.52-.6 11.64 1.32.42.18.48.659.36 1.08zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.24 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/>
+            </svg>
+        </a>
+        <hr>
+    </header>
+    <div class="main-container">
+        <!-- Top section with album info -->
+        <div class="top-section">
+            <div class="album-info" id="album-info">
+                <h2>click an album!</h2>
+            </div>
+        </div>
+        
+        <!-- Middle section with enlarged active album -->
+        <div class="middle-section">
+            <div class="active-album-display" id="active-album-display"></div>
+        </div>
+        
+        <!-- Bottom section with horizontal album list -->
+        <div class="bottom-section">
+            <div id="circle-container">
+                <div id="half-circle"></div>
+                <!-- albums will be added here by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Redirect confirmation modal -->
+    <div class="redirect-modal" id="redirect-modal">
+        <div class="modal-content">
+            <h3>Open in Spotify?</h3>
+            <p>Do you want to open this album in Spotify?</p>
+            <div class="modal-buttons">
+                <button class="modal-button" id="cancel-redirect">Cancel</button>
+                <button class="modal-button" id="confirm-redirect">Open</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+    const albumInfo = document.getElementById("album-info");
+    const activeAlbumDisplay = document.getElementById("active-album-display");
+    const circleContainer = document.getElementById("circle-container");
+    const halfCircle = document.getElementById("half-circle");
+    const body = document.body;
+    const redirectModal = document.getElementById("redirect-modal");
+    const cancelRedirect = document.getElementById("cancel-redirect");
+    const confirmRedirect = document.getElementById("confirm-redirect");
+    let currentAlbumLink = "";
+
+    // List of albums with individual links
+    const albums = [
+        { img: "album1.jpg", name: "Album One", artist: "Artist 1", rating: "5/5", link: "https://open.spotify.com/album/5EYKrEDnKhhcNxGedaRQeK" },
+        { img: "album2.jpg", name: "Album Two", artist: "Artist 2", rating: "4/5", link: "https://open.spotify.com/album/0rnW4hH24v4j16wUbeR5Tn" },
+        { img: "album3.jpg", name: "Album Three", artist: "Artist 3", rating: "4.5/5", link: "https://open.spotify.com/album/6MH3CAXp8AN8ELrbex18dM" },
+        { img: "album4.jpg", name: "Album Four", artist: "Artist 4", rating: "3/5", link: "https://open.spotify.com/album/2fenSS68JI1h4Fo296JfGr" },
+        { img: "album5.jpg", name: "Album Five", artist: "Artist 5", rating: "4/5", link: "https://open.spotify.com/album/7txGsnDSqVMoRl6RQ9XyZP" },
+        { img: "album6.jpg", name: "Album Six", artist: "Artist 6", rating: "5/5", link: "https://open.spotify.com/album/460fhxEztqiD7DkxTAETRL" },
+        { img: "album7.jpg", name: "Album Seven", artist: "Artist 7", rating: "3.5/5", link: "https://open.spotify.com/album/1uE3dRPe3SrGdNhd1nWlSa" },
+        { img: "album8.jpg", name: "Album Eight", artist: "Artist 8", rating: "4/5", link: "https://open.spotify.com/album/6hPkbAV3ZXpGZBGUvL6jVM" },
+        { img: "album9.jpg", name: "Album Nine", artist: "Artist 9", rating: "4.5/5", link: "https://open.spotify.com/album/6TQ8nqw43uUOWu7Yqp58ko" },
+        { img: "album10.jpg", name: "Album Ten", artist: "Artist 10", rating: "5/5", link: "https://open.spotify.com/album/0AHaFhhNCg3u0j3EJ3NfP7" },
+    ];
+
+    // Reset and configure container styles for horizontal layout
+    circleContainer.style.position = "relative";
+    circleContainer.style.width = "100%";
+    circleContainer.style.height = "100%";
+    circleContainer.style.overflow = "visible";
+    
+    halfCircle.style.position = "absolute";
+    halfCircle.style.bottom = "0";
+    halfCircle.style.left = "50%";
+    halfCircle.style.transform = "translateX(-50%)";
+    halfCircle.style.width = "100%";
+    halfCircle.style.height = "100px";
+    halfCircle.style.overflow = "visible";
+    
+    // Horizontal arc configuration
+    const radius = window.innerWidth * 1.5; // Large radius to make a shallow arc
+    const centerX = window.innerWidth / 2;
+    const centerY = 200; // Position center below the visible area
+    
+    // Set initial active album
+    let activeIndex = 0;
+    
+    // Horizontal arc configuration
+    const visibleCount = 5; // Visible albums in viewport
+    const totalAngle = Math.PI * 0.5; // 90 degrees - a shallow arc
+    const angleStep = totalAngle / (visibleCount - 1);
+    
+    // Create album items 
+    albums.forEach((album, i) => {
+        const albumItem = document.createElement('div');
+        albumItem.className = 'album-item';
+        albumItem.dataset.index = i;
+        
+        // Create circle CD case within item
+        albumItem.innerHTML = `
+            <div class="circle-cd-case">
+                <div class="circle-album-art" style="background-image: url('assets/Albums/${album.img}');"></div>
+                <div class="circle-spine"></div>
+            </div>
+        `;
+        
+        // Add event listeners
+        albumItem.addEventListener('click', function() {
+            const index = parseInt(this.dataset.index);
+            setActiveAlbum(index);
+        });
+        
+        // Append to half-circle
+        halfCircle.appendChild(albumItem);
+    });
+    
+    // Function to position all items based on current active index
+    function positionItems() {
+        const items = document.querySelectorAll('.album-item');
+        const containerWidth = window.innerWidth;
+        
+        items.forEach((item, i) => {
+            // Mark active album for styling
+            if (i === activeIndex) {
+                item.setAttribute('data-active', 'true');
+            } else {
+                item.setAttribute('data-active', 'false');
+            }
+            
+            // Calculate position in the array considering looping
+            let distanceFromActive = (i - activeIndex + albums.length) % albums.length;
+            
+            // Ensure we get the shortest path (in either direction)
+            if (distanceFromActive > albums.length / 2) {
+                distanceFromActive -= albums.length;
+            }
+            
+            const absDistance = Math.abs(distanceFromActive);
+            const isVisible = absDistance <= Math.floor(visibleCount/2);
+            
+            if (isVisible) {
+                // Create a shallow arc for the albums at the bottom
+                const angle = Math.PI / 2 - distanceFromActive * (Math.PI / 10);
+                
+                // Calculate position on the arc
+                const x = centerX + radius * Math.cos(angle);
+                const y = centerY - radius * Math.sin(angle);
+                
+                // Position the item
+                item.style.left = `${x}px`;
+                item.style.top = `${y}px`;
+                
+                // Scale and opacity based on distance from active
+                const scale = 1 - (absDistance * 0.15);
+                const opacity = 1 - (absDistance * 0.2);
+                
+                // Apply styles
+                item.style.transform = `translate(-50%, -50%)`;
+                item.style.opacity = opacity;
+                item.style.zIndex = 100 - absDistance;
+                item.style.display = 'block';
+                
+                // Scale the CD case while maintaining the brightness difference
+                const cdCase = item.querySelector('.circle-cd-case');
+                cdCase.style.transform = `scale(${scale})`;
+            } else {
+                // Hide items not in view
+                item.style.display = 'none';
+            }
+        });
+    }
+    
+    // Function to set active album and update display with looping
+    function setActiveAlbum(index) {
+        // Implement looping - wrap around to beginning or end
+        if (index < 0) {
+            index = albums.length - 1;
+        } else if (index >= albums.length) {
+            index = 0;
+        }
+        
+        if (index !== activeIndex) {
+            // Fade out current display
+            activeAlbumDisplay.classList.add('hidden');
+            
+            setTimeout(() => {
+                // Update active index
+                activeIndex = index;
+                
+                // Update displays
+                updateActiveAlbumDisplay(albums[activeIndex]);
+                positionItems();
+            }, 300);
+        } else {
+            // Already active, just update display
+            updateActiveAlbumDisplay(albums[activeIndex]);
+        }
+    }
+
+    // Update the active album display and info
+    function updateActiveAlbumDisplay(album) {
+        // Update info box
+        albumInfo.innerHTML = `
+            <span class="album-name">${album.name}</span><br>
+            <span class="artist-name">${album.artist}</span><br>
+            đỉm: ${album.rating}
+        `;
+        
+        // Update enlarged album display
+        activeAlbumDisplay.innerHTML = `
+            <div class="cd-case enlarged-case" id="enlarged-album">
+                <div class="album-bg" style="background-image: url('assets/Albums/${album.img}');"></div>
+                <div class="album-art" style="background-image: url('assets/Albums/${album.img}');"></div>
+                <div class="sup pos-tl"></div>
+                <div class="sup pos-tr"></div>
+                <div class="sup pos-bl"></div>
+                <div class="sup pos-br"></div>
+                <div class="spine"></div>
+            </div>
+        `;
+        
+        // Store the current album link
+        currentAlbumLink = album.link;
+        
+        // Add click event for redirect modal
+        document.getElementById('enlarged-album').addEventListener('click', function() {
+            redirectModal.style.display = 'flex';
+        });
+        
+        // Show with animation
+        activeAlbumDisplay.classList.remove('hidden');
+        activeAlbumDisplay.classList.add('show');
+        
+        // Update background color
+        updateBackgroundColor(album.img);
+    }
+
+    // Function to update background color based on album cover
+    function updateBackgroundColor(image) {
+        const img = new Image();
+        img.crossOrigin = "Anonymous";
+        img.src = `assets/Albums/${image}`;
+        
+        img.onload = function() {
+            const color = getDominantColor(img);
+            body.style.backgroundColor = `rgb(${color.r}, ${color.g}, ${color.b})`;
+            
+            // Keep header background color fixed
+            document.getElementById('title').style.backgroundColor = '#F0A8D0';
+            
+            // Update album info box with a lighter version of the same color
+            const albumInfo = document.getElementById('album-info');
+            const lighterColor = {
+                r: Math.min(color.r + 30, 255),
+                g: Math.min(color.g + 30, 255),
+                b: Math.min(color.b + 30, 255)
+            };
+            
+            // Apply the lighter color with transparency for the info box
+            albumInfo.style.background = `rgba(${lighterColor.r}, ${lighterColor.g}, ${lighterColor.b}, 0.7)`;
+            
+            // Adjust the box shadow color to match
+            albumInfo.style.boxShadow = `0 2px 15px rgba(${lighterColor.r}, ${lighterColor.g}, ${lighterColor.b}, 0.6)`;
+        };
+    }
+
+     // Function to get dominant color from image
+     function getDominantColor(img) {
+        const canvas = document.createElement("canvas");
+        const ctx = canvas.getContext("2d");
+        
+        canvas.width = img.width;
+        canvas.height = img.height;
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        
+        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+        let r = 0, g = 0, b = 0, count = 0;
+        
+        for (let i = 0; i < imageData.length; i += 4 * 50) {
+            r += imageData[i];
+            g += imageData[i + 1];
+            b += imageData[i + 2];
+            count++;
+        }
+        
+        return { 
+            r: Math.floor(r / count), 
+            g: Math.floor(g / count), 
+            b: Math.floor(b / count) 
+        };
+    }
+    positionItems();
+    
+    // Set the initial active album display
+    updateActiveAlbumDisplay(albums[activeIndex]);
+    
+    // Navigation with keyboard (optional but useful)
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'ArrowLeft') {
+            setActiveAlbum(activeIndex - 1);
+        } else if (e.key === 'ArrowRight') {
+            setActiveAlbum(activeIndex + 1);
+        }
+    });
+    
+    // Cancel and confirm buttons for modal
+    cancelRedirect.addEventListener('click', function() {
+        redirectModal.style.display = 'none';
+    });
+    
+    confirmRedirect.addEventListener('click', function() {
+        window.open(currentAlbumLink, '_blank');
+        redirectModal.style.display = 'none';
+    });
+    
+    // Handle window resize to reposition items
+    window.addEventListener('resize', function() {
+        positionItems();
+    });
+});
+</script>
