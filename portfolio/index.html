@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>khzzz</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
+        }
+
+        * {
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+        }
+
+
+        body {
+            background-color: #FFEBD4;
+            overflow-x: hidden;
+        }
+
+        section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            padding: 2rem;
+        }
+
+        .hero {
+            transition: all 0.5s ease;
+        }
+
+        .title {
+            text-align: center;
+            font-size: 5rem;
+            color: #F0A8D0;
+            margin-bottom: 5rem;
+            text-shadow: 3px 3px 0px rgba(240, 168, 208, 0.3);
+            opacity: 0;
+            transform: translateY(50px);
+            animation: fadeIn 1s ease-out forwards;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .subtitle-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .subtitle-box {
+            width: calc(16.66% - 20px);
+            min-width: 150px;
+            text-align: center;
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(50px);
+        }
+
+        .subtitle-box:nth-child(1) { animation: fadeIn 1s 0.2s ease-out forwards; }
+        .subtitle-box:nth-child(2) { animation: fadeIn 1s 0.4s ease-out forwards; }
+        .subtitle-box:nth-child(3) { animation: fadeIn 1s 0.6s ease-out forwards; }
+        .subtitle-box:nth-child(4) { animation: fadeIn 1s 0.8s ease-out forwards; }
+        .subtitle-box:nth-child(5) { animation: fadeIn 1s 1.0s ease-out forwards; }
+        .subtitle-box:nth-child(6) { animation: fadeIn 1s 1.2s ease-out forwards; }
+
+        .subtitle-box h3:hover {
+            transform: translateY(-10px);
+            transform: scale(1.1);
+            transition: all 0.3s ease;
+        }
+
+        .subtitle-box h3 {
+            color: #333;
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+        }
+
+        .content-section {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s ease;
+        }
+
+        .content-section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .buttons-container {
+            display: flex;
+            justify-content: center;
+            gap: 100px;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+
+        .big-button {
+            padding: 3rem 6rem;
+            font-size: 2rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            width: 200px;
+            text-align: center;
+            text-decoration: none;
+            font-weight: bold;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .big-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, rgba(240, 168, 208, 0.8), rgba(247, 181, 202, 0.8));
+            transform: scaleX(0);
+            transform-origin: 0 50%;
+            transition: transform 0.5s ease-out;
+            z-index: -1;
+        }
+
+        .big-button:hover::before {
+            transform: scaleX(1);
+        }
+
+        .big-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .listen {
+            background-color: #F0A8D0;
+            color: white;
+        }
+
+        .watch {
+            background-color: #F7B5CA;
+            color: white;
+        }
+
+        .read {
+            background-color: #FFC6C6;
+            color: white;
+        }
+
+        .social-container {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            margin-top: 4rem;
+        }
+
+        .social-icon {
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background-color: #F7B5CA;
+            color: white;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .social-icon:hover {
+            transform: translateY(-10px) rotate(10deg);
+            background-color: #F0A8D0;
+            box-shadow: 0 10px 20px rgba(240, 168, 208, 0.4);
+        }
+
+        .background-shape {
+            position: absolute;
+            z-index: -1;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.4;
+        }
+
+        .shape1 {
+            top: 10%;
+            left: 10%;
+            width: 300px;
+            height: 300px;
+            background-color: #F0A8D0;
+            animation: float 10s ease-in-out infinite;
+        }
+
+        .shape2 {
+            bottom: 10%;
+            right: 10%;
+            width: 250px;
+            height: 250px;
+            background-color: #FFC6C6;
+            animation: float 8s ease-in-out infinite reverse;
+        }
+
+        .shape3 {
+            top: 50%;
+            left: 50%;
+            width: 200px;
+            height: 200px;
+            background-color: #F7B5CA;
+            animation: float 12s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            50% { transform: translate(30px, 30px) rotate(10deg); }
+            100% { transform: translate(0, 0) rotate(0deg); }
+        }
+
+        @media (max-width: 768px) {
+            .title {
+                font-size: 3rem;
+            }
+            
+            .subtitle-box {
+                width: calc(50% - 20px);
+            }
+            
+            .buttons-container {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
+</head>
+<body>
+    <!-- Decorative background shapes -->
+    <div class="background-shape shape1"></div>
+    <div class="background-shape shape2"></div>
+    <div class="background-shape shape3"></div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1 class="title">Portfolio</h1>
+        
+        <div class="subtitle-container">
+            <div class="subtitle-box">
+                <h3>Design</h3>
+            </div>
+            <div class="subtitle-box">
+                <h3>Development</h3>
+            </div>
+            <div class="subtitle-box">
+                <h3>Photography</h3>
+            </div>
+            <div class="subtitle-box">
+                <h3>Art</h3>
+            </div>
+            <div class="subtitle-box">
+                <h3>Writing</h3>
+            </div>
+            <div class="subtitle-box">
+                <h3>Music</h3>
+            </div>
+        </div>
+    </section>
+
+    <!-- Content Section (appears on scroll) -->
+    <section>
+        <div class="content-section" id="content-buttons">
+            <div class="buttons-container">
+                <a href="index.html" class="big-button listen">Listen</a>
+                <a href="watch.html" class="big-button watch">Watch</a>
+                <a href="read.html" class="big-button read">Read</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Social Media Section (appears on scroll) -->
+    <section>
+        <div class="content-section" id="content-social">
+            <div class="social-container">
+                <a href="https://instagram.com" class="social-icon">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                <a href="https://twitter.com" class="social-icon">
+                    <i class="fab fa-twitter"></i>
+                </a>
+                <a href="https://github.com" class="social-icon">
+                    <i class="fab fa-github"></i>
+                </a>
+                <a href="https://linkedin.com" class="social-icon">
+                    <i class="fab fa-linkedin-in"></i>
+                </a>
+                <a href="https://youtube.com" class="social-icon">
+                    <i class="fab fa-youtube"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        /// Replace the existing water effect script with this optimized version
+document.addEventListener('DOMContentLoaded', function() {
+    // Scroll reveal animation code (unchanged)
+    const contentSections = document.querySelectorAll('.content-section');
+    
+    function checkScroll() {
+        contentSections.forEach(section => {
+            const sectionTop = section.getBoundingClientRect().top;
+            if (sectionTop < window.innerHeight - 150) {
+                section.classList.add('visible');
+            }
+        });
+    }
+    
+    // Initial check in case user starts scrolled down
+    checkScroll();
+    
+    // Check on scroll
+    window.addEventListener('scroll', checkScroll);
+
+    // Optimized Water effect
+    const canvas = document.getElementById('waterCanvas');
+    const ctx = canvas.getContext('2d');
+    let width, height;
+    
+    // Mouse position
+    let mouseX = 0;
+    let mouseY = 0;
+    let lastMouseX = 0;
+    let lastMouseY = 0;
+    let isMouseMoving = false;
+    let mouseTimer = null;
+    
+    // Water properties - optimized values
+    const dropRadius = 2;
+    const rippleStrength = 0.3;
+    const rippleDamping = 0.97;
+    
+    // Water surface grid - increased resolution but with performance optimizations
+    let cols, rows;
+    const resolution = 15; // Higher value = lower resolution but better performance
+    let current;
+    let previous;
+    
+    // Initialize canvas
+    function setupCanvas() {
+        width = window.innerWidth;
+        height = window.innerHeight;
+        
+        canvas.width = width;
+        canvas.height = height;
+        
+        // Calculate grid dimensions
+        cols = Math.ceil(width / resolution) + 2; // Add padding
+        rows = Math.ceil(height / resolution) + 2;
+        
+        // Initialize water surface arrays
+        current = new Float32Array(cols * rows).fill(0);
+        previous = new Float32Array(cols * rows).fill(0);
+    }
+    
+    // Add ripple with improved performance
+    function addRipple(x, y, strength = rippleStrength) {
+        // Convert mouse coordinates to grid position
+        const col = Math.floor(x / resolution);
+        const row = Math.floor(y / resolution);
+        
+        // Ensure we're within bounds
+        if (col >= 1 && col < cols - 1 && row >= 1 && row < rows - 1) {
+            // Create a small area of ripples for more natural effect
+            const index = col + row * cols;
+            const radius = 2; // Size of the ripple area
+            
+            for (let i = -radius; i <= radius; i++) {
+                for (let j = -radius; j <= radius; j++) {
+                    // Skip corners for more circular ripple
+                    if (i*i + j*j > radius*radius) continue;
+                    
+                    const idx = (col + i) + (row + j) * cols;
+                    // Apply strength with distance falloff
+                    const dist = Math.sqrt(i*i + j*j);
+                    const rippleValue = strength * (1 - dist/radius);
+                    
+                    if (idx >= 0 && idx < current.length) {
+                        previous[idx] += rippleValue;
+                    }
+                }
+            }
+        }
+    }
+    
+    // Update water simulation - optimized algorithm
+    function updateWater() {
+        // Calculate water wave propagation
+        for (let i = 1; i < cols - 1; i++) {
+            for (let j = 1; j < rows - 1; j++) {
+                const index = i + j * cols;
+                const up = i + (j - 1) * cols;
+                const down = i + (j + 1) * cols;
+                const left = (i - 1) + j * cols;
+                const right = (i + 1) + j * cols;
+                
+                // Wave equation for next value - slightly modified for better visual effect
+                current[index] = (previous[up] + previous[down] + 
+                                 previous[left] + previous[right]) / 2 - current[index];
+                
+                // Apply damping
+                current[index] *= rippleDamping;
+            }
+        }
+        
+        // Swap buffers
+        [current, previous] = [previous, current];
+    }
+    
+    // Draw water surface with improved lighting and shading
+    function drawWater() {
+        ctx.clearRect(0, 0, width, height);
+        
+        // Water background with custom palette
+        const gradient = ctx.createLinearGradient(0, 0, 0, height);
+        gradient.addColorStop(0, "#FFEBD4");
+        gradient.addColorStop(1, "#FFC6C6");
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, width, height);
+        
+        // Draw ripples with improved shading
+        for (let i = 0; i < cols - 1; i++) {
+            for (let j = 0; j < rows - 1; j++) {
+                // Skip rendering every other cell for performance
+                if ((i + j) % 2 !== 0) continue;
+                
+                const index = i + j * cols;
+                const x = i * resolution;
+                const y = j * resolution;
+                
+                // Only draw significant ripples
+                const height = previous[index];
+                if (Math.abs(height) > 0.01) {
+                    // Gradient highlighting for more realistic water effect
+                    let r1 = 240, g1 = 168, b1 = 208; // #F0A8D0
+                    let r2 = 247, g2 = 181, b2 = 202; // #F7B5CA
+                    
+                    // Create lighting effect based on ripple height
+                    const ratio = Math.max(0, Math.min(1, (height + 0.5) / 1.0));
+                    const r = Math.floor(r1 + (r2 - r1) * ratio);
+                    const g = Math.floor(g1 + (g2 - g1) * ratio);
+                    const b = Math.floor(b1 + (b2 - b1) * ratio);
+                    
+                    // Use height to determine opacity for 3D effect
+                    const alpha = Math.min(0.8, Math.abs(height) * 2);
+                    ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${alpha})`;
+                    
+                    // Draw ripple with size proportional to height
+                    const rippleSize = resolution * (1 + Math.abs(height) * 3);
+                    
+                    // Draw elliptical ripples for more natural look
+                    ctx.beginPath();
+                    ctx.ellipse(
+                        x, 
+                        y, 
+                        rippleSize / 2, 
+                        rippleSize / 1.5, 
+                        0, 
+                        0, 
+                        Math.PI * 2
+                    );
+                    ctx.fill();
+                    
+                    // Add highlight for elevated ripples
+                    if (height > 0.05) {
+                        ctx.fillStyle = `rgba(255, 255, 255, ${height * 0.7})`;
+                        ctx.beginPath();
+                        ctx.ellipse(
+                            x - rippleSize/6, 
+                            y - rippleSize/6, 
+                            rippleSize/4, 
+                            rippleSize/6, 
+                            Math.PI/4, 
+                            0, 
+                            Math.PI * 2
+                        );
+                        ctx.fill();
+                    }
+                }
+            }
+        }
+        
+        // Only draw mouse effects when the mouse is moving
+        if (isMouseMoving) {
+            // Draw subtle glow around mouse
+            const mouseGradient = ctx.createRadialGradient(
+                mouseX, mouseY, 0,
+                mouseX, mouseY, 60
+            );
+            mouseGradient.addColorStop(0, "rgba(240, 168, 208, 0.4)");
+            mouseGradient.addColorStop(0.5, "rgba(247, 181, 202, 0.2)");
+            mouseGradient.addColorStop(1, "rgba(255, 198, 198, 0)");
+            
+            ctx.fillStyle = mouseGradient;
+            ctx.beginPath();
+            ctx.arc(mouseX, mouseY, 60, 0, Math.PI * 2);
+            ctx.fill();
+        }
+    }
+    
+    // Animation loop with frame limiting for performance
+    let lastFrameTime = 0;
+    const frameInterval = 1000 / 30; // Target 30 FPS for smoother performance
+    
+    function animate(currentTime) {
+        requestAnimationFrame(animate);
+        
+        const elapsed = currentTime - lastFrameTime;
+        
+        // Skip frames if needed for consistent performance
+        if (elapsed < frameInterval) return;
+        
+        lastFrameTime = currentTime - (elapsed % frameInterval);
+        
+        updateWater();
+        drawWater();
+    }
+    
+    // Track mouse movement with debouncing for performance
+    document.addEventListener('mousemove', (e) => {
+        lastMouseX = mouseX;
+        lastMouseY = mouseY;
+        
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+        
+        isMouseMoving = true;
+        
+        // Clear existing timer
+        if (mouseTimer) clearTimeout(mouseTimer);
+        
+        // Set flag to false after mouse stops
+        mouseTimer = setTimeout(() => {
+            isMouseMoving = false;
+        }, 100);
+        
+        // Calculate distance moved
+        const dx = mouseX - lastMouseX;
+        const dy = mouseY - lastMouseY;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        
+        // Only add ripples for significant movement (reduces processing for tiny movements)
+        if (dist > 5) {
+            addRipple(mouseX, mouseY);
+            
+            // Add fewer intermediate points for performance
+            if (dist > 20) {
+                const steps = Math.min(3, Math.floor(dist / 20));
+                for (let i = 1; i < steps; i++) {
+                    const x = lastMouseX + (dx * i / steps);
+                    const y = lastMouseY + (dy * i / steps);
+                    addRipple(x, y, rippleStrength * 0.7);
+                }
+            }
+        }
+    });
+    
+    // Add automatic subtle ripples for more liveliness
+    function addRandomRipples() {
+        if (Math.random() < 0.1) {
+            const x = Math.random() * width;
+            const y = Math.random() * height;
+            addRipple(x, y, rippleStrength * 0.3);
+        }
+        setTimeout(addRandomRipples, 2000);
+    }
+    
+    // Handle window resize
+    window.addEventListener('resize', () => {
+        setupCanvas();
+    });
+    
+    // Initialize and start water effect
+    setupCanvas();
+    animate(0);
+    addRandomRipples();
+});
+    </script>
+</body>
+</html>
