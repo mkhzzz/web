@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>khzzz's Movie Wishlist</title>
+
+    <style>
+        /* Most of the existing styling will remain the same */
+        body {
+            background-color: #1A1A2E;
+            color: #FFFFFF;
+            font-size: clamp(1rem, 1vw + 0.5rem, 1.6rem);
+            font-family: 'Philosophy';
+            overflow-x: hidden;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            transition: background-color 1s ease;
+        }
+
+        /* Movie Poster Specific Styling */
+        .movie-case {
+            height: 400px;
+            width: 270px;
+            border-radius: 12px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.6);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .enlarged-case {
+            height: 600px;
+            width: 400px;
+        }
+
+        .movie-art {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            border-radius: 12px;
+            z-index: 1;
+        }
+
+        .movie-info-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: linear-gradient(transparent, rgba(0,0,0,0.8));
+            color: white;
+            padding: 15px;
+            border-bottom-left-radius: 12px;
+            border-bottom-right-radius: 12px;
+            z-index: 2;
+        }
+
+        .movie-name {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .director-name {
+            font-size: 1.5rem;
+            opacity: 0.8;
+        }
+
+        /* Scrolling Movie Strip */
+        #movie-strip {
+            display: flex;
+            overflow-x: scroll;
+            scroll-snap-type: x mandatory;
+            scroll-behavior: smooth;
+            padding: 20px 0;
+            gap: 20px;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .movie-item {
+            flex: 0 0 auto;
+            width: 200px;
+            scroll-snap-align: center;
+            transition: transform 0.3s ease;
+            opacity: 0.6;
+        }
+
+        .movie-item.active {
+            transform: scale(1.1);
+            opacity: 1;
+        }
+
+        .movie-strip-item {
+            height: 300px;
+            width: 200px;
+            border-radius: 12px;
+            background-size: cover;
+            background-position: center;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+        }
+    </style>
+</head>
+<body>
+    <header id="title">
+        <h2>Movie Wishlist</h2>
+        <p class="subtitle">movies I want to watch, someday...</p>
+    </header>
+    
+    <div class="main-container">
+        <!-- Left section with movie info -->
+        <div class="left-section">
+            <div class="album-info" id="movie-info">
+                <h2>scroll through!</h2>
+            </div>
+        </div>
+        
+        <!-- Middle section with enlarged active movie -->
+        <div class="middle-section">
+            <div class="active-album-display" id="active-movie-display"></div>
+        </div>
+        
+        <!-- Right section with movie strip -->
+        <div class="right-section">
+            <div id="movie-strip">
+                <!-- movies will be added here by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const movieInfo = document.getElementById("movie-info");
+        const activeMovieDisplay = document.getElementById("active-movie-display");
+        const movieStrip = document.getElementById("movie-strip");
+        const body = document.body;
+
+        // List of movies with details
+        const movies = [
+            { 
+                img: "her.jpg", 
+                link: "https://www.imdb.com/title/tt1798709/", 
+                name: "Her", 
+                director: "Spike Jonze", 
+                year: 2013, 
+                rating: "10/10" 
+            },
+            { 
+                img: "moonlight.jpg", 
+                link: "https://www.imdb.com/title/tt4975722/", 
+                name: "Moonlight", 
+                director: "Barry Jenkins", 
+                year: 2016, 
+                rating: "9.5/10" 
+            },
+            { 
+                img: "arrival.jpg", 
+                link: "https://www.imdb.com/title/tt2543164/", 
+                name: "Arrival", 
+                director: "Denis Villeneuve", 
+                year: 2016, 
+                rating: "9/10" 
+            },
+            // Add more movies here
+        ];
+
+        let activeIndex = 0;
+
+        // Create movie items in the strip
+        movies.forEach((movie, index) => {
+            const movieItem = document.createElement('div');
+            movieItem.className = 'movie-item';
+            movieItem.dataset.index = index;
+
+            movieItem.innerHTML = `
+                <div class="movie-strip-item" style="background-image: url('assets/Movies/${movie.img}')"></div>
+            `;
+
+            movieItem.addEventListener('click', function() {
+                setActiveMovie(index);
+            });
+
+            movieStrip.appendChild(movieItem);
+        });
+
+        // Function to set active movie
+        function setActiveMovie(index) {
+            // Implement looping
+            if (index < 0) index = movies.length - 1;
+            if (index >= movies.length) index = 0;
+
+            // Remove active class from all items
+            document.querySelectorAll('.movie-item').forEach(item => {
+                item.classList.remove('active');
+            });
+
+            // Add active class to current item
+            const activeItem = document.querySelector(`.movie-item[data-index="${index}"]`);
+            activeItem.classList.add('active');
+
+            // Center the active item in the strip
+            activeItem.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+
+            // Update movie info and display
+            updateActiveMovieDisplay(movies[index]);
+            activeIndex = index;
+        }
+
+        // Update the active movie display and info
+        function updateActiveMovieDisplay(movie) {
+            // Update info box
+            movieInfo.innerHTML = `
+                <span class="movie-name">${movie.name}</span><br>
+                <span class="director-name">${movie.director}</span><br>
+                ${movie.year} • ${movie.rating}
+            `;
+            
+            // Update enlarged movie display
+            activeMovieDisplay.innerHTML = `
+                <a href="${movie.link}" target="_blank">
+                    <div class="movie-case enlarged-case">
+                        <div class="movie-art" style="background-image: url('assets/Movies/${movie.img}')"></div>
+                        <div class="movie-info-overlay">
+                            <div class="movie-name">${movie.name}</div>
+                            <div class="director-name">${movie.director}</div>
+                        </div>
+                    </div>
+                </a>
+            `;
+
+            // Update background color based on movie poster
+            updateColors(movie.img);
+        }
+
+        function getImageColors(img) {
+    const canvas = document.createElement("canvas");
+    const ctx = canvas.getContext("2d");
+    
+    canvas.width = img.width;
+    canvas.height = img.height;
+    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+    
+    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+    let allColors = [];
+    
+    // Sample colors from the image (sample more points for better color representation)
+    for (let i = 0; i < imageData.length; i += 4 * 25) { // Sample more frequently
+        // Skip transparent pixels
+        if (imageData[i + 3] < 128) continue;
+        
+        const r = imageData[i];
+        const g = imageData[i + 1];
+        const b = imageData[i + 2];
+        
+        allColors.push({ r, g, b });
+    }
+    
+    // Calculate the average (dominant) color
+    let dominant = { r: 0, g: 0, b: 0 };
+    allColors.forEach(color => {
+        dominant.r += color.r;
+        dominant.g += color.g;
+        dominant.b += color.b;
+    });
+    
+    dominant.r = Math.floor(dominant.r / allColors.length);
+    dominant.g = Math.floor(dominant.g / allColors.length);
+    dominant.b = Math.floor(dominant.b / allColors.length);
+    
+    // Filter for vibrant colors
+    let vibrantColors = allColors.filter(color => {
+        // Calculate colorfulness
+        const colorfulness = Math.abs(color.r - color.g) + 
+                            Math.abs(color.r - color.b) + 
+                            Math.abs(color.g - color.b);
+        
+        // Only include reasonably colorful pixels
+        return colorfulness > 45;
+    });
+    
+    // If we don't have enough vibrant colors, add some artificially
+    if (vibrantColors.length < 5) {
+        // Add complementary color of dominant
+        vibrantColors.push({
+            r: 255 - dominant.r,
+            g: 255 - dominant.g,
+            b: 255 - dominant.b
+        });
+        
+        // Add a warm color variant
+        vibrantColors.push({
+            r: Math.min(dominant.r * 1.4, 255),
+            g: Math.min(dominant.g * 0.8, 255),
+            b: Math.min(dominant.b * 0.8, 255)
+        });
+        
+        // Add a cool color variant
+        vibrantColors.push({
+            r: Math.min(dominant.r * 0.8, 255),
+            g: Math.min(dominant.g * 0.9, 255),
+            b: Math.min(dominant.b * 1.4, 255)
+        });
+    }
+    
+    return { 
+        dominant,
+        vibrantColors
+    };
+}
+
+
+function updateColors(image) {
+    const img = new Image();
+    img.crossOrigin = "Anonymous";
+    img.src = `assets/Albums/${image}`;
+    
+    img.onload = function() {
+        const colors = getImageColors(img);
+        const dominant = colors.dominant;
+        const vibrantColors = colors.vibrantColors; // Get array of vibrant colors from the image
+        
+        // Update body background with dominant color
+        body.style.backgroundColor = `rgb(${dominant.r}, ${dominant.g}, ${dominant.b})`;
+        
+        // Keep header background color fixed
+        document.getElementById('title').style.backgroundColor = '#F0A8D0';
+        
+        // Create a semi-transparent version of dominant color for info box
+        const albumInfo = document.getElementById('album-info');
+        const infoBoxColor = {
+            r: Math.min(dominant.r + 20, 255),
+            g: Math.min(dominant.g + 20, 255),
+            b: Math.min(dominant.b + 20, 255)
+        };
+        
+        // Apply the color with transparency for the info box
+        albumInfo.style.background = `rgba(${infoBoxColor.r}, ${infoBoxColor.g}, ${infoBoxColor.b}, 0.7)`;
+        albumInfo.style.boxShadow = `0 2px 15px rgba(${infoBoxColor.r}, ${infoBoxColor.g}, ${infoBoxColor.b}, 0.6)`;
+        
+        // Calculate brightness of the info box background
+        const bgBrightness = (infoBoxColor.r * 299 + infoBoxColor.g * 587 + infoBoxColor.b * 114) / 1000;
+        
+        // Select the most vibrant color that has good contrast with the background
+        let bestTextColor = null;
+        let bestContrastScore = 0;
+        
+        // Try each vibrant color to find the best one
+        for (const color of vibrantColors) {
+            // Calculate brightness of this color
+            const colorBrightness = (color.r * 299 + color.g * 587 + color.b * 114) / 1000;
+            
+            // Calculate contrast (difference in brightness)
+            const contrastDiff = Math.abs(bgBrightness - colorBrightness);
+            
+            // Calculate saturation/colorfulness
+            const colorfulness = Math.abs(color.r - color.g) + 
+                                Math.abs(color.r - color.b) + 
+                                Math.abs(color.g - color.b);
+            
+            // Combined score favoring both contrast and colorfulness
+            const contrastScore = contrastDiff * 1.5 + colorfulness * 0.5;
+            
+            if (contrastScore > bestContrastScore) {
+                bestContrastScore = contrastScore;
+                bestTextColor = color;
+            }
+        }
+        
+        // If no good vibrant color found, fallback to black or white based on background
+        if (!bestTextColor || bestContrastScore < 100) {
+            bestTextColor = bgBrightness > 125 ? 
+                { r: 30, g: 30, b: 30 } : 
+                { r: 245, g: 245, b: 245 };
+        }
+        
+        // Apply text colors
+        const textColor = `rgb(${bestTextColor.r}, ${bestTextColor.g}, ${bestTextColor.b})`;
+        
+        // Apply to album info elements
+        const albumNameEl = albumInfo.querySelector('.album-name');
+        const artistNameEl = albumInfo.querySelector('.artist-name');
+        
+        if (albumNameEl) albumNameEl.style.color = textColor;
+        if (artistNameEl) artistNameEl.style.color = textColor;
+        
+        // Apply to remaining text in album info
+        albumInfo.style.color = textColor;
+    };
+}
+
+
+        // Handle scroll events on movie strip
+        movieStrip.addEventListener('scroll', function() {
+            // Find the most centered movie item
+            const items = document.querySelectorAll('.movie-item');
+            let closestItem = items[0];
+            let closestDistance = Infinity;
+
+            items.forEach(item => {
+                const rect = item.getBoundingClientRect();
+                const distanceFromCenter = Math.abs(rect.left + rect.width/2 - window.innerWidth/2);
+                
+                if (distanceFromCenter < closestDistance) {
+                    closestDistance = distanceFromCenter;
+                    closestItem = item;
+                }
+            });
+
+            const index = parseInt(closestItem.dataset.index);
+            setActiveMovie(index);
+        });
+
+        // Handle mouse wheel for scrolling
+        movieStrip.addEventListener('wheel', function(e) {
+            e.preventDefault();
+            const direction = e.deltaY > 0 ? 1 : -1;
+            let nextIndex = activeIndex + direction;
+
+            // Implement looping
+            if (nextIndex < 0) nextIndex = movies.length - 1;
+            if (nextIndex >= movies.length) nextIndex = 0;
+
+            setActiveMovie(nextIndex);
+        });
+
+        // Initialize with first movie
+        setActiveMovie(0);
+    });
+    </script>
+</body>
+</html>

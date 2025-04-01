@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>khzzz</title>
+    <style>
+        body {
+            background: #df73ff;
+            color: #4a0080;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .card {
+            background-color: rgba(215, 160, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 32px rgba(74, 0, 128, 0.1);
+        }
+        
+        h1, h2, h3 {
+            color: #4a0080;
+            margin-bottom: 15px;
+        }
+        
+        h1 {
+            font-size: 36px;
+            text-align: center;
+            color: #4a0080;
+        }
+
+        h2 {
+            font-size: 20px;
+            text-align: center;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .polaroid-container {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .polaroid {
+            background: white;
+            padding: 15px 15px 15px 15px;
+            width: 220px;
+            text-align: center;
+            transform: rotate(-2deg);
+            border: 1px solid #f9f9f9;
+        }
+        
+        .polaroid img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        
+        .album-grid {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .album {
+            width: 100px;
+            height: auto;
+            padding: 5px;
+        }
+        
+        .album-cover{
+            width: 100%;
+            height: auto;
+            border-radius: 5px;
+            margin-bottom: 5px;
+        }
+
+        .album a {
+            color: #4a0080;
+            display: flex;
+            opacity: 0.6;
+            transition: 0.3s ease;
+        }
+
+        .album a:hover {
+            opacity: 1;
+            scale: 1.1;
+        }
+        
+        .book-container {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .book {
+            width: 20%;
+            border-radius: 10px;
+        }
+
+        .book img {
+            width: auto;
+            height: 200px;
+            border-radius: 5px;
+        }
+
+        .poem-container {
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .poem {
+            width: 48%;
+            padding: 10px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: rgba(215, 160, 255, 0.2);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        th {
+            background-color: #d857ff;
+            color: white;
+        }
+        
+        .social-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .social {
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background-color: #d857ff;
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+        }
+        
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            max-width: 100%;
+            border-radius: 10px;
+            margin: 15px 0;
+        }
+        
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card header">
+            <h1>đây là trang của khoa</h1>
+            <p>(khong bik dung may tinh)</p>
+        </div>
+        
+        <br>
+
+        <div class="card">
+            <h2>giới thịu</h2>
+            <p style="text-align: center;">thích mèo thích nghe nhạc thích xem phim thích đọc sách</p>
+        </div>
+        
+        <br>
+
+        <div class="card">
+            <h2>what to look back to in 100 years</h2>
+            <div class="polaroid-container">
+                <div class="polaroid">
+                    <img src="https://mir-s3-cdn-cf.behance.net/project_modules/fs/9f40ef216281579.677d71ba96715.jpeg">
+                    <p>10</p>
+                </div>
+                <div class="polaroid">
+                    <img src="https://mir-cdn.behance.net/v1/rendition/project_modules/source/4b3d33219134507.67df9ae59a5a3.jpg">
+                    <p>11</p>
+                </div>
+                <div class="polaroid">
+                    <a href="https://www.behance.net/gallery/219134507/warmed-saturatedphotostolookbacktoin10years" target="_blank">
+                    <img src="https://mir-cdn.behance.net/v1/rendition/project_modules/source/7f22fb219134507.67df9ae598175.jpg">
+                    </a>
+                    <p>12</p>
+                </div>
+            </div>
+        </div>
+        
+        <br>
+        
+        <div class="card">
+            <h2>current favorite albums</h2>
+            <div class="album-grid">
+                <div class="album">
+                    <a href="https://open.spotify.com/album/3mH6qwIy9crq0I9YQbOuDf" target="_blank">
+                        <img src="https://i.scdn.co/image/ab67616d0000b273c5649add07ed3720be9d5526" class="album-cover">
+                    </a>
+                </div>
+                <div class="album">
+                    <a href="https://open.spotify.com/album/0LlzHi8Erl8zpTumqt88Qe" target="_blank">
+                        <img src="https://i.scdn.co/image/ab67616d0000b2739e7004b8749744b06fa81a99" class="album-cover">
+                    </a>
+                </div>
+                <div class="album">
+                    <a href="https://open.spotify.com/album/5B10Jy0L9Lbks24hqhRC8D" target="_blank">
+                        <img src="https://i.scdn.co/image/ab67616d0000b2731d57c410b71a26281860704a" class="album-cover">
+                    </a>
+                </div>
+                <div class="album">
+                    <a href="https://open.spotify.com/album/5XpEKORZ4y6OrCZSKsi46A" target="_blank">
+                        <img src="https://i.scdn.co/image/ab67616d0000b273879e9318cb9f4e05ee552ac9" class="album-cover">
+                    </a>
+                </div>
+                <div class="album">
+                    <a href="https://open.spotify.com/album/3cN3mENkACWuRCDOuQUtfw" target="_blank">
+                        <img src="https://i.scdn.co/image/ab67616d0000b273a2d8391f5021568d253a4eef" class="album-cover">
+                    </a>
+                </div>
+                
+                <div class="album">
+                    <a href="https://open.spotify.com/album/1uE3dRPe3SrGdNhd1nWlSa" target="_blank">
+                        <img src="https://i.scdn.co/image/ab67616d0000b273ef985ba96e76a9574cc68a30" class="album-cover">
+                    </a>
+                </div>
+                <div class="album">
+                    <a href="https://open.spotify.com/album/4p9dVvZDaZliSjTCbFRhJy" target="_blank">
+                        <img src="https://i.scdn.co/image/ab67616d0000b273cb3f67e8026e2e493a1e8262" class="album-cover">
+                    </a>
+                </div>
+                <div class="album">
+                    <a href="https://open.spotify.com/album/6TQ8nqw43uUOWu7Yqp58ko" target="_blank">
+                        <img src="https://i.scdn.co/image/ab67616d0000b273ac895ae149e004dcbb6367be" class="album-cover">
+                    </a>
+                </div>
+                <div class="album">
+                    <a href="https://open.spotify.com/album/1weenld61qoidwYuZ1GESA" target="_blank">
+                        <img src="https://i.scdn.co/image/ab67616d0000b2737ab89c25093ea3787b1995b4" class="album-cover">
+                    </a>
+                </div>
+                <div class="album">
+                    <a href="https://open.spotify.com/album/1p12OAWwudgMqfMzjMvl2a" target="_blank">
+                        <img src="https://i.scdn.co/image/ab67616d0000b273f38c6b37a21334e22005b1f7" class="album-cover">
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <br>
+
+        <div class="card">
+            <h2>start reading books !?</h2>
+            <div class="book-container">
+                <div class="book">
+                    <a href="https://www.goodreads.com/book/show/31277781-i-u-k-di-u-c-a-ti-m-t-p-h-a-namiya" target="_blank">
+                        <img src="https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1470613244i/31277781.jpg">
+                    </a>
+                </div>
+                <div class="book">
+                    <a href="https://www.goodreads.com/book/show/24678653-451-f" target="_blank">
+                        <img src="https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1631248236i/24678653.jpg">
+                    </a>
+                </div>
+                <div class="book">
+                    <a href="https://www.goodreads.com/book/show/12107753-n-u-m-t-m-ng-c-ng-i-l-kh-ch" target="_blank">
+                        <img src="https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1311437263i/12107753.jpg">
+                    </a>
+                </div>
+                <div class="book">
+                    <a href="https://www.goodreads.com/book/show/55628117-c-th-nh-trong-g-ng" target="_blank">
+                        <img src="https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1602440986i/55628117.jpg">
+                    </a>
+                </div>
+                <div class="book">
+                    <a href="https://www.goodreads.com/book/show/11981057-bi-n-ni-n-k-chim-v-n-d-y-c-t" target="_blank">
+                        <img src="https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1632763555i/11981057.jpg">
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <br>
+
+        <div class="card">
+            <h2>favorite french poem</h2>
+            <div class="poem-container">
+                <div class="poem">
+                    <h3>Les Roses de Saadi</h3>
+                    <p>J'ai voulu ce matin te rapporter des roses;<br>
+                        Mais j'en avais tant pris dans mes ceintures closes<br>
+                        Que les noeuds trop serrés n'ont pu les contenir.</p>
+                        <br>
+                        <p>Les noeuds ont éclaté. Les roses envolées<br>
+                        Dans le vent, à la mer s'en sont toutes allées.<br>
+                        Elles ont suivi l'eau pour ne plus revenir.</p>
+                        <br>
+                        <p>La vague en a paru rouge et comme enflammée.<br>
+                        Ce soir, ma robe encore en est toute embaumée . . .<br>
+                        Respires-en sur moi l'odorant souvenir.</p>
+                </div>
+                <div class="poem">
+                    <h3>The Roses of Saadi</h3>
+                    <p>This morning I wanted to bring you roses;<br>
+                        But I had taken so many in my closed belt<br>
+                        That the knots were too tight to contain them.</p>
+                        <br>
+                        <p>The knots burst. The roses flew away<br>
+                        In the wind, to the sea, they have all gone.<br>
+                        They followed the water, never to return.</p>
+                        <br>
+                        <p>The wave appeared red and as if aflame.<br>
+                        Tonight, my dress is still perfumed with them...<br>
+                        Breathe in their fragrant memory upon me.</p>
+                </div>
+            </div>
+        </div>
+        
+        <br>
+
+        <div class="card">
+            <h2>cat video from 13/7/2005</h2>
+            <div class="video-container">
+                <iframe width="1000" height="800" src="https://www.youtube.com/embed/4MtisL78vHI" title="Unique Cat (13 Jul 2005)" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>            
+            </div>
+        </div>
+
+        <br>
+
+        <div class="card">
+            <h2>some friends in class</h2>
+            <table>
+            <tr>
+                <th>ten</th>
+                <th>fun fact</th>
+            </tr>
+            <tr>
+                <td>Nam Khang</td>
+                <td>non-stop yapper</td>
+            </tr>
+            <tr>
+                <td>Thanh Tri</td>
+                <td>gambler</td>
+            </tr>
+            <tr>
+                <td>Dinh Thanh</td>
+                <td>almost same music taste</td>
+            </tr>
+            <tr>
+                <td>Hoang Nam</td>
+                <td>yeu nuoc viet nam</td>
+            </tr>
+            <tr>
+                <td>Cong Kiet</td>
+                <td>fat</td>
+            </tr>
+            <tr>
+                <td>Nhi, Tram, Ngoc</td>
+                <td>nghien matcha</td>
+            </tr>
+            </table>
+        </div>
+        
+        <br>
+
+        <div class="social-container">
+            <a href="https://open.spotify.com/user/3n56z0tl36m0g9ybrnmaqtigw" target="_blank" class="social"><i class="fab fa-spotify"></i></a>
+            <a href="https://www.facebook.com/mkhzzzzzz/" target="_blank" class="social"><i class="fab fa-facebook"></i></a>
+            <a href="https://instagram.com/m.khzzz" target="_blank" class="social"><i class="fab fa-instagram"></i></a>
+            <a href="https://behance.net/khzzz" target="_blank" class="social"><i class="fab fa-behance"></i></a>
+            <a href="https://x.com/mkhzzzzzz" target="_blank" class="social" ><i class="fab fa-twitter"></i></a>
+            <a href="https://steamcommunity.com/id/mkhzzz/" target="_blank" class="social"><i class="fab fa-steam"></i></a>
+            <a href="https://www.goodreads.com/user/show/187501928-khzzz" target="_blank" class="social"><i class="fab fa-goodreads"></i></a>
+        </div>
+    </div>
+    
+    <div style="text-align: center;">18/3/2025</div>
+</body>
+</html>
