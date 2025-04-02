@@ -66,9 +66,8 @@
 
         .header h1 {
             color: #7B1FA2;
-            margin-bottom: 0px;
             padding: 15px 30px;
-            background-color: rgba(215, 160, 255, 0.8);
+            background-color: #de73ffd7;
             border-radius: 15px;
         }
         
@@ -184,6 +183,26 @@
             width: 100%;
             height: 100%;
             border: none;
+        }
+        
+        .form-row input, .form-row select, .form-row textarea {
+            padding: 10px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            background-color: rgba(215, 160, 255, 0.2);
+            color: #7B1FA2;
+            font-family: 'Gluten';
+        }
+        
+        .submit-button {
+            background-color: #d857ff;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 10px 20px;
+            font-family: 'Gluten';
+            cursor: pointer;
+            font-size: 16px;
         }
 
     </style>
@@ -342,7 +361,7 @@
         <br>
 
         <div class="card">
-            <h2>video con mèo từ 13/7/2005</h2>
+            <h2>video con mèo đăng từ 13/7/2005</h2>
             <div class="video-container">
                 <iframe width="1000" height="800" src="https://www.youtube.com/embed/4MtisL78vHI" title="Unique Cat (13 Jul 2005)" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>            
             </div>
@@ -358,24 +377,28 @@
                 <th>fun fact</th>
             </tr>
             <tr>
-                <td>Nam Khang</td>
+                <td>Khang</td>
                 <td>non-stop yapper</td>
             </tr>
             <tr>
-                <td>Thành Trí</td>
+                <td>Trí</td>
                 <td>gambler</td>
             </tr>
             <tr>
-                <td>Đình Thành</td>
+                <td>Thành</td>
                 <td>almost same music taste</td>
             </tr>
             <tr>
-                <td>Hoàng Nam</td>
+                <td>Nam</td>
                 <td>yêu nước thương dân</td>
             </tr>
             <tr>
-                <td>Công Kiệt</td>
+                <td>Kiệt</td>
                 <td>same gunpla addiction</td>
+            </tr>
+            <tr>
+                <td>Huy</td>
+                <td>chuyên anh</td>
             </tr>
             <tr>
                 <td>Nhi, Trâm, Ngọc</td>
@@ -386,6 +409,38 @@
         
         <br>
 
+        <div class="card">
+            <h2>chấm đỉm trang nì</h2>
+            <form>
+                <div class="form-row">
+                    <label for="name">tên:</label>
+                    <input type="text" id="name" name="name" placeholder="park hojimin" required>
+                </div>
+                
+                <div class="form-row">
+                    <label for="rating">đỉm:</label>
+                    <select id="rating" name="rating">
+                        <option value="9.0">9.0</option>
+                        <option value="9.1">9.1</option>
+                        <option value="9.2">9.2</option>
+                        <option value="9.3">9.3</option>
+                        <option value="9.4">9.4</option>
+                        <option value="9.5">9.5</option>
+                        <option value="9.6">9.6</option>
+                        <option value="9.7">9.7</option>
+                        <option value="9.8">9.8</option>
+                        <option value="9.9">9.9</option>
+                        <option value="10.0">10</option>
+                    </select>
+                </div>
+                
+                <button type="submit" class="submit-button">submit</button>
+            </form>
+        </div>
+
+        <br>
+
+        <h2 style="font-size: 15px;">mấy trang khác</h2>
         <div class="social-container">
             <a href="https://open.spotify.com/user/3n56z0tl36m0g9ybrnmaqtigw" target="_blank" class="social"><i class="fab fa-spotify"></i></a>
             <a href="https://www.facebook.com/mkhzzzzzz/" target="_blank" class="social"><i class="fab fa-facebook"></i></a>
